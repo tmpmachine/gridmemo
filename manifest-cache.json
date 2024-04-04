@@ -1,0 +1,57 @@
+{
+  "version": "0.5.4",
+  
+  
+  "libs": [
+    "https://cdn.jsdelivr.net/gh/ccampbell/mousetrap@v1.6.5/mousetrap.min.js",
+    "js/lib/tmpmachine/lsdb@v1.0.0.js",
+    "js/lib/ace@1.32.7/ace.min.js",
+    "js/lib/ace@1.32.7/mode-markdown.min.js",
+    "js/lib/ace@1.32.7/theme-monokai.min.js",
+    "js/lib/hotkeys.min@v3.12.2.js",
+    "js/lib/sortable@1.15.1.min.js",
+    "https://cdn.jsdelivr.net/gh/tmpmachine/templateslot.js@v1.0.2/templateslot.min.js",
+    "https://unpkg.com/dexie-export-import@1.0.3",
+    "https://unpkg.com/dexie@3.2.2"
+  ],
+  "components": [
+    "js/components/tab-manager-component.js",
+    "js/components/workspace-component.js",
+    "js/components/gsi-component.js",
+    "js/components/backup-component.js",
+    "js/components/notes-component.js"
+  ],
+  "uis": [
+    "js/uis/workspace-ui.js",
+    "js/uis/file-tab-ui.js"
+  ],
+  "app": [
+    "js/dom-events.js",
+    "js/lib/drive-api.js",
+    "js/ui.js",
+    "js/app-data.js",
+    "js/app.js",
+    "js/view-states.js"
+  ],
+  "utils": [
+    "js/utils/view-state-util.js",
+    "js/utils/uuidv4-util.js"
+  ],
+  "fonts": [
+    "https://fonts.gstatic.com/s/materialsymbolsoutlined/v151/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOej.woff2"
+  ],
+  "core": [
+    "js/core/component-loader.js"
+  ],
+  "root": [
+    "css/style.css",
+    "css/theme-ace-codetmp.css",
+    
+    "./",
+    "index.js",
+    "pwa.js",
+    "pwa-cacher.js",
+    "index.html",
+    "manifest.json"
+  ]
+}

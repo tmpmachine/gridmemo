@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <title>GridMemo</title>
+  
+  <!-- PWA setup -->
+  <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, minimum-scale=1"/>
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#202020" id="browser-nav-theme-color"/>
+  <link href="css/style.css" rel="stylesheet"/>  
+  <link href="css/theme-ace-codetmp.css" rel="stylesheet"/>  
+    
+  <!-- site -->
+  <link href='images/zapnote-16.png' rel='icon' type='image/png'/>
+  <link href='images/zapnote-16.png' rel='icon' sizes='16x16' type='image/png'/>
+  <link href='images/zapnote-32.png' rel='icon' sizes='32x32' type='image/png'/>
+  
+</head>
+<body>
+  
+  <div class="h-100 d-grid" style="grid-template-columns:auto 1fr" data-view-group="workspace features-cloud" data-view-states="sidebar">  
+  
+    <!-- # sidebar -->
+    [ #sidebar .h-100 .ov-hidden
+      <div data-view-group="workspace" data-view-name="sidebar" class="h-100 ov-hidden">
+        [ {w:200px} .d-grid {rows:auto 1fr} .h-100 .ov-hidden
+          
+          [ {p:0.5em}
+            [ .d-flex .justify-content-between
+              [ 
+                [btn 'menu' data-onclick='toggle-sidebar' .btn .btn-style-1 .btn-icon-md .icon-mate-o]
+              ]
+              [ .d-flex .align-items-center
+                [btn '+ New workspace' .btn .btn-style-1 data-onclick='workspace-create']
+              ]
+            ]
+          ]
+          
+          <!-- # container workspace -->
+          [ #container-workspace data-onclick='on-click-container-workspace' data-ondblclick='on-dblclick-container-workspace' .ov-auto]
+          
+        ]
+      </div>
+    ]
+    
+    <!-- # main content -->
+    <div class="h-100 ov-hidden">
+      
+      [ .d-grid .h-100 {rows:auto 1fr}
+      
+        <!-- # toolbar -->
+        [ {p:0.5em} .d-flex .justify-content-between
+        
+          <!-- left -->
+          [ .d-flex {gap:0.5rem}
+            
+            [ data-view-group="workspace" data-view-name-not="sidebar"
+              [btn 'menu' data-onclick='toggle-sidebar' .btn .btn-style-1 .btn-icon-md .icon-mate-o]
+            ]
+            
+          ]
+          
+          <!-- right -->
+          [
+            [btn data-onclick='open-settings' .btn .btn-style-1 .btn-icon-text
+              [ .inner
+                [s 'settings' .icon-mate-o .icon]
+                Settings 
+              ]
+            ]
+          ]
+        
+        ]
+        
+        <!-- # main view -->
+        <div class="h-100 ov-hidden" data-view-group="view-editor" data-view-states="notes">
+          
+          <!-- # notes -->
+          <div class="h-100 ov-hidden" data-view-group="view-editor" data-view-name="notes">
+          [ .ov-hidden .d-grid {rows:auto 1fr} .h-100
+          
+            [ .ov-hidden {h:40px;} {ws:nowrap}
+              [ .ov-auto
+                <!-- # container tab -->
+                [ #container-tab .d-inline-flex data-onclick="handle-click-container-tab" .ov-auto .user-select-none data-ondblclick="handle-dblclick-tab" data-onmousedown="handle-mousedown-tab"]
+              ]
+            ]
+            
+            <!-- # container notes -->
+            [ .d-grid .ov-hidden .h-100 
+              
+              <div class="h-100 ov-hidden" data-view-group="workspace" data-view-name="has-workspace">
+              [ .ov-hidden .d-grid {rows:auto 1fr} .h-100
+              
+                [ {mb:0.5rem} {p:0.5em}
+                  [ .d-flex .align-items-center {gap:0.3rem}
+                    [btn 'Save (Ctrl + S)' data-onclick='save-workspace' .btn .btn-style-1]
+                    [btn 'Insert note (Alt + N)' data-onclick='insert-note' .btn .btn-style-1]
+                    [btn 'Delete selected note (Ctrl + D)' data-onclick='delete-selected-notes' .btn .btn-style-1]
+                  ]
+                ]
+                [ .h-100 .ov-auto
+                  <div id="wrapper" style="height:100%;display:grid;grid-template-columns:repeat(4,1fr);"></div>
+                ]
+                
+              ]
+              </div>
+              
+              [ data-view-group="workspace" data-view-name="no-workspace"
+                [ .text-center .d-flex .flex-column {gap:0.5rem}
+                  You don't have a workspace.
+                  [
+                    [btn 'Create a new one' .btn .btn-style-1 data-onclick='workspace-create']
+                  ]
+                ]
+              ]
+              
+              [ data-view-group="workspace" data-view-name="no-open-workspace"
+                [ .text-center .d-flex .flex-column {gap:0.5rem}
+                  Open existing workspace
+                  [
+                    [btn 'Create a new one' .btn .btn-style-1 data-onclick='workspace-create']
+                  ]
+                ]
+              ]
+              
+            ]
+            
+          ]
+          </div>
+          
+          <!-- # settings page -->
+          <div class="h-100 ov-hidden" data-view-group="view-editor" data-view-name="settings">
+          [ .h-100 .ov-auto {p:0.5em 2rem} data-view-group="features-settings" data-view-states="debug-log-off"
+          
+            [h1 'Settings']
+          
+            <!-- Backup and restore -->
+            [h3 'Backup & Restore']
+            [h5 'Backup to Google Drive']
+            [
+              [ .d-flex .flex-wrap {gap:0.25rem}
+                [ data-view-group="features-cloud" data-view-name-not="authorized"
+                  [btn 'Authorize' data-onclick='authorize' .btn .btn-style-1]
+                ]
+                
+                [ data-view-group="features-cloud" data-view-name="authorized"
+                  [ .d-flex {gap:0.25rem}
+                  
+                    [btn .btn-icon-text data-onclick='logout'
+                      [ .inner
+                        Sign out
+                      ]
+                    ]
+                  
+                    [btn .btn-icon-text data-onclick='backup-to-cloud' .btn .btn-style-2 #btn-cloud-backup
+                      [ .inner
+                        Backup to Drive [s 'backup' .icon-mate-o .icon]
+                      ]
+                    ]
+                    [btn .btn-icon-text data-onclick='restore-from-cloud' .btn .btn-style-2 #btn-cloud-restore
+                      [ .inner
+                        Restore from Drive
+                      ]
+                    ]
+                  ]
+                ]
+                
+              ]
+              [s #txt-backup-status]
+              [s #txt-restore-status]
+            ][ {mb:0.5rem}]
+            
+            [h5 'Local backup and restore']
+            [ .d-flex .flex-wrap {gap:0.25rem}
+              [btn 'Export to file' data-onclick='export-to-file' .btn .btn-style-1]
+              [btn 'Import from file' data-onclick='import-from-file' .btn .btn-style-1]
+            ]
+            [ .separator]
+            
+            <!-- Data Control -->
+            [h3 'Application Data']
+            [
+              [btn 'Clear data' data-onclick='clear-data' .btn .btn-style-1]
+            ]
+            [ .separator]
+            
+            <!-- # PWA cache control  -->
+            [h3 'Updates & Offline Access']
+            [ .d-grid {gap:0.5em}
+              [
+                Offline access status : [s #txt-pwa-cacher-cache-status-label '-']
+              ]
+              [ .d-flex .flex-wrap {gap:0.25rem}
+                [btn 'Check for updates' onclick="pwaCacher.ManualUpdate()" .btn .btn-style-1]
+                [btn 'Remove app cache *' onclick="pwaCacher.RemoveUpdate()" .btn .btn-style-1]
+              ]
+              [
+                [s #txt-pwa-cacher-update-status]
+              ]
+              [
+                [small '*) Removing app cache will disable offline access until you update the app manually by clicking on <b>Check for updates</b> button.']
+              ]
+            ]
+            
+            <!-- # debug feature -->
+            [ .d-none
+              [h3 'Debugging']
+              [
+                [btn data-onclick="toggle-debug-log" 'Show application logs' .btn .btn-style-1 data-view-group="features-settings" data-view-name="debug-log-off"]
+                [btn data-onclick="toggle-debug-log" 'Hide application logs' .btn .btn-style-1 data-view-group="features-settings" data-view-name="debug-log-on"]
+                [pre data-view-group="features-settings" data-view-name="debug-log-on" #container-debug-log 'Application log :']
+              ][ {mb:3rem}]
+            ]
+          
+          ]
+          </div>
+          
+        </div>
+      
+      ]
+      
+    </div>
+    
+  </div>  
+  
+  [ {d:none} #container-editor-hidden
+    [ #container-editor {pos:fixed} .h-100 {t:0;h:100%;l:0;w:100%;}  .ace-codetmp
+      [ #editor {h:100%}]
+    ]
+  ]
+  
+  <div id="notif" class="notif-wrapper">
+    <div class="notif" style="font-family:sans-serif;background:cornflowerblue;font-size:14px;color:#fff;">Text copied</div>
+  </div>
+  
+  <!-- # banner update -->
+  <style>
+    #update-notif {
+      display: none;
+    }
+    #update-notif.active {
+      display: block;
+    }
+  </style>
+  <div id="update-notif" style="position:fixed;bottom:0;left:0;width:100%;background:#0b0b0e;color:#ccc;z-index:8177;font-weight:bold">
+    <div class="d-grid" style="grid-template-columns:1fr auto;">
+      <div style="padding:16px;" data-js="message">New version available</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;">
+        <div data-js="btn-refresh" style="padding:16px;text-transform:uppercase;font-weight:bold;color:#d8d782;">Refresh</div>
+        <div data-js="btn-dismiss" style="padding:16px;text-transform:uppercase;font-weight:bold;">Dismiss</div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <!-- # templates -->
+  
+  <file src="html/command-palette.html"></file>
+  
+  <template id="tmp-list-workspace">
+    <!-- # tmp-list-workspace -->
+    [ .item data-kind="itemWorkspace" .d-grid {p:0.3em 0.5em} {gap:0.5rem}
+      [s data-slot="title"]
+      [ .d-flex .justify-content-end {gap:0.3em}
+        [btn .btn-icon .icon-mate-o 'chevron_right' data-action="open" title="open" .obsoletes]
+        [btn .btn-icon .icon-mate-o 'edit' data-action="rename" title="rename"]
+        [btn .btn-icon .icon-mate-o 'delete' data-action="delete" title="delete"]
+      ]
+    ]
+  </template>
+  <template id="tmp-list-tab">
+    <!-- # list tab -->
+    [ .item data-kind="itemFileTab" 
+      [ .d-flex
+        [s data-slot="title" data-action="open" .title]
+        [ .d-flex .justify-content-end {gap:0.3em}
+          [btn .btn-icon .icon-mate-o 'close' data-action="close" title="Close" .cursor-pointer]
+        ]
+      ]
+    ]
+  </template>
+  <template id="tmp-list-note">
+    [ .notes data-kind="item"
+      [ .notes-inner
+        [t .text spellcheck="false" .mousetrap]
+        [ .handle .pos-absolute {b:0;r:0;}
+          [ .icon-mate-o .btn-icon 'drag_pan']
+        ]
+      ]
+    ]
+  </template>
+  
+  
+  
+  <!-- # scripts -->
+  
+  <script> window.asd = console.log; </script>
+  <script>
+    ;(function() {
+      window.listening = function(selector, dataKey, eventType, callbacks) {
+        let elements = document.querySelectorAll(selector)
+        for (let el of elements) {
+          let callbackFunc = callbacks[el.dataset[dataKey]];
+          el.addEventListener(eventType, callbackFunc);
+        }
+      };
+    })();
+  </script>
+  <script>
+    window.child = function(selector, node=document) { return node.querySelectorAll(selector) };
+  </script>
+  <script src="js/core/component-loader.js"></script>
+  <script src="index.js"></script>
+  <script src="pwa-cacher.js"></script>
+  <script src="pwa.js"></script>
+  <script src="js/components/gsi-component.js"></script>
+  <script src="https://accounts.google.com/gsi/client" onload="compoGsi.InitTokenClient()" async defer></script>
+  <script src="https://unpkg.com/dexie@3.2.2"></script>
+  <script src="https://unpkg.com/dexie-export-import@1.0.3"></script>
+  
+</body>
+</html>

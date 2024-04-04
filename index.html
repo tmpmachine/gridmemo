@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <title>GridMemo</title>
+  
+  <!-- PWA setup -->
+  <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, minimum-scale=1"/>
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#202020" id="browser-nav-theme-color"/>
+  <link href="css/style.css" rel="stylesheet"/>  
+  <link href="css/theme-ace-codetmp.css" rel="stylesheet"/>  
+    
+  <!-- site -->
+  <link href='images/zapnote-16.png' rel='icon' type='image/png'/>
+  <link href='images/zapnote-16.png' rel='icon' sizes='16x16' type='image/png'/>
+  <link href='images/zapnote-32.png' rel='icon' sizes='32x32' type='image/png'/>
+  
+</head>
+<body>
+  
+  <div class="h-100 d-grid" style="grid-template-columns:auto 1fr" data-view-group="workspace features-cloud" data-view-states="sidebar">  
+  
+    <!-- # sidebar -->
+    <div id="sidebar" class="h-100 ov-hidden">
+      <div data-view-group="workspace" data-view-name="sidebar" class="h-100 ov-hidden">
+        <div class="d-grid h-100 ov-hidden" style="width:200px;grid-template-rows:auto 1fr;">
+          
+          <div style="padding:0.5em;">
+            <div class="d-flex justify-content-between">
+              <div>
+                <button class="btn btn-style-1 btn-icon-md icon-mate-o" data-onclick='toggle-sidebar'>menu</button>
+              </div>
+              <div class="d-flex align-items-center">
+                <button class="btn btn-style-1" data-onclick='workspace-create'>+ New workspace</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- # container workspace -->
+          <div id="container-workspace" class="ov-auto" data-onclick='on-click-container-workspace' data-ondblclick='on-dblclick-container-workspace'></div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <!-- # main content -->
+    <div class="h-100 ov-hidden">
+      
+      <div class="d-grid h-100" style="grid-template-rows:auto 1fr;">
+      
+        <!-- # toolbar -->
+        <div class="d-flex justify-content-between" style="padding:0.5em;">
+        
+          <!-- left -->
+          <div class="d-flex" style="gap:0.5rem;">
+            
+            <div data-view-group="workspace" data-view-name-not="sidebar">
+              <button class="btn btn-style-1 btn-icon-md icon-mate-o" data-onclick='toggle-sidebar'>menu</button>
+            </div>
+            
+          </div>
+          
+          <!-- right -->
+          <div>
+            <button class="btn btn-style-1 btn-icon-text" data-onclick='open-settings'>
+              <div class="inner">
+                <span class="icon-mate-o icon">settings</span>
+                Settings 
+              </div>
+            </button>
+          </div>
+        
+        </div>
+        
+        <!-- # main view -->
+        <div class="h-100 ov-hidden" data-view-group="view-editor" data-view-states="notes">
+          
+          <!-- # notes -->
+          <div class="h-100 ov-hidden" data-view-group="view-editor" data-view-name="notes">
+          <div class="ov-hidden d-grid h-100" style="grid-template-rows:auto 1fr;">
+          
+            <div class="ov-hidden" style="height:40px;white-space:nowrap;">
+              <div class="ov-auto">
+                <!-- # container tab -->
+                <div id="container-tab" class="d-inline-flex ov-auto user-select-none" data-onclick="handle-click-container-tab" data-ondblclick="handle-dblclick-tab" data-onmousedown="handle-mousedown-tab"></div>
+              </div>
+            </div>
+            
+            <!-- # container notes -->
+            <div class="d-grid ov-hidden h-100">
+              
+              <div class="h-100 ov-hidden" data-view-group="workspace" data-view-name="has-workspace">
+              <div class="ov-hidden d-grid h-100" style="grid-template-rows:auto 1fr;">
+              
+                <div style="margin-bottom:0.5rem;padding:0.5em;">
+                  <div class="d-flex align-items-center" style="gap:0.3rem;">
+                    <button class="btn btn-style-1" data-onclick='save-workspace'>Save (Ctrl + S)</button>
+                    <button class="btn btn-style-1" data-onclick='insert-note'>Insert note (Alt + N)</button>
+                    <button class="btn btn-style-1" data-onclick='delete-selected-notes'>Delete selected note (Ctrl + D)</button>
+                  </div>
+                </div>
+                <div class="h-100 ov-auto">
+                  <div id="wrapper" style="height:100%;display:grid;grid-template-columns:repeat(4,1fr);"></div>
+                </div>
+                
+              </div>
+              </div>
+              
+              <div data-view-group="workspace" data-view-name="no-workspace">
+                <div class="text-center d-flex flex-column" style="gap:0.5rem;">
+                  You don't have a workspace.
+                  <div>
+                    <button class="btn btn-style-1" data-onclick='workspace-create'>Create a new one</button>
+                  </div>
+                </div>
+              </div>
+              
+              <div data-view-group="workspace" data-view-name="no-open-workspace">
+                <div class="text-center d-flex flex-column" style="gap:0.5rem;">
+                  Open existing workspace
+                  <div>
+                    <button class="btn btn-style-1" data-onclick='workspace-create'>Create a new one</button>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            
+          </div>
+          </div>
+          
+          <!-- # settings page -->
+          <div class="h-100 ov-hidden" data-view-group="view-editor" data-view-name="settings">
+          <div class="h-100 ov-auto" data-view-group="features-settings" data-view-states="debug-log-off" style="padding:0.5em 2rem;">
+          
+            <h1>Settings</h1>
+          
+            <!-- Backup and restore -->
+            <h3>Backup & Restore</h3>
+            <h5>Backup to Google Drive</h5>
+            <div>
+              <div class="d-flex flex-wrap" style="gap:0.25rem;">
+                <div data-view-group="features-cloud" data-view-name-not="authorized">
+                  <button class="btn btn-style-1" data-onclick='authorize'>Authorize</button>
+                </div>
+                
+                <div data-view-group="features-cloud" data-view-name="authorized">
+                  <div class="d-flex" style="gap:0.25rem;">
+                  
+                    <button class="btn-icon-text" data-onclick='logout'>
+                      <div class="inner">
+                        Sign out
+                      </div>
+                    </button>
+                  
+                    <button id="btn-cloud-backup" class="btn-icon-text btn btn-style-2" data-onclick='backup-to-cloud'>
+                      <div class="inner">
+                        Backup to Drive <span class="icon-mate-o icon">backup</span>
+                      </div>
+                    </button>
+                    <button id="btn-cloud-restore" class="btn-icon-text btn btn-style-2" data-onclick='restore-from-cloud'>
+                      <div class="inner">
+                        Restore from Drive
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+              <span id="txt-backup-status"></span>
+              <span id="txt-restore-status"></span>
+            </div><div style="margin-bottom:0.5rem;"></div>
+            
+            <h5>Local backup and restore</h5>
+            <div class="d-flex flex-wrap" style="gap:0.25rem;">
+              <button class="btn btn-style-1" data-onclick='export-to-file'>Export to file</button>
+              <button class="btn btn-style-1" data-onclick='import-from-file'>Import from file</button>
+            </div>
+            <div class="separator"></div>
+            
+            <!-- Data Control -->
+            <h3>Application Data</h3>
+            <div>
+              <button class="btn btn-style-1" data-onclick='clear-data'>Clear data</button>
+            </div>
+            <div class="separator"></div>
+            
+            <!-- # PWA cache control  -->
+            <h3>Updates & Offline Access</h3>
+            <div class="d-grid" style="gap:0.5em;">
+              <div>
+                Offline access status : <span id="txt-pwa-cacher-cache-status-label">-</span>
+              </div>
+              <div class="d-flex flex-wrap" style="gap:0.25rem;">
+                <button class="btn btn-style-1" onclick="pwaCacher.ManualUpdate()">Check for updates</button>
+                <button class="btn btn-style-1" onclick="pwaCacher.RemoveUpdate()">Remove app cache *</button>
+              </div>
+              <div>
+                <span id="txt-pwa-cacher-update-status"></span>
+              </div>
+              <div>
+                <small>*) Removing app cache will disable offline access until you update the app manually by clicking on <b>Check for updates</b> button.</small>
+              </div>
+            </div>
+            
+            <!-- # debug feature -->
+            <div class="d-none">
+              <h3>Debugging</h3>
+              <div>
+                <button class="btn btn-style-1" data-onclick="toggle-debug-log" data-view-group="features-settings" data-view-name="debug-log-off">Show application logs</button>
+                <button class="btn btn-style-1" data-onclick="toggle-debug-log" data-view-group="features-settings" data-view-name="debug-log-on">Hide application logs</button>
+                <pre id="container-debug-log" data-view-group="features-settings" data-view-name="debug-log-on">Application log :</pre>
+              </div><div style="margin-bottom:3rem;"></div>
+            </div>
+          
+          </div>
+          </div>
+          
+        </div>
+      
+      </div>
+      
+    </div>
+    
+  </div>  
+  
+  <div id="container-editor-hidden" style="display:none;">
+    <div id="container-editor" class="h-100 ace-codetmp" style="position:fixed;top:0;height:100%;left:0;width:100%;">
+      <div id="editor" style="height:100%;"></div>
+    </div>
+  </div>
+  
+  <div id="notif" class="notif-wrapper">
+    <div class="notif" style="font-family:sans-serif;background:cornflowerblue;font-size:14px;color:#fff;">Text copied</div>
+  </div>
+  
+  <!-- # banner update -->
+  <style>
+    #update-notif {
+      display: none;
+    }
+    #update-notif.active {
+      display: block;
+    }
+  </style>
+  <div id="update-notif" style="position:fixed;bottom:0;left:0;width:100%;background:#0b0b0e;color:#ccc;z-index:8177;font-weight:bold">
+    <div class="d-grid" style="grid-template-columns:1fr auto;">
+      <div style="padding:16px;" data-js="message">New version available</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;">
+        <div data-js="btn-refresh" style="padding:16px;text-transform:uppercase;font-weight:bold;color:#d8d782;">Refresh</div>
+        <div data-js="btn-dismiss" style="padding:16px;text-transform:uppercase;font-weight:bold;">Dismiss</div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <!-- # templates -->
+  
+  <file src="html/command-palette.html"></file>
+  
+  <template id="tmp-list-workspace">
+    <!-- # tmp-list-workspace -->
+    <div class="item d-grid" data-kind="itemWorkspace" style="padding:0.3em 0.5em;gap:0.5rem;">
+      <span data-slot="title"></span>
+      <div class="d-flex justify-content-end" style="gap:0.3em;">
+        <button class="btn-icon icon-mate-o obsoletes" data-action="open" title="open">chevron_right</button>
+        <button class="btn-icon icon-mate-o" data-action="rename" title="rename">edit</button>
+        <button class="btn-icon icon-mate-o" data-action="delete" title="delete">delete</button>
+      </div>
+    </div>
+  </template>
+  <template id="tmp-list-tab">
+    <!-- # list tab -->
+    <div class="item" data-kind="itemFileTab">
+      <div class="d-flex">
+        <span class="title" data-slot="title" data-action="open"></span>
+        <div class="d-flex justify-content-end" style="gap:0.3em;">
+          <button class="btn-icon icon-mate-o cursor-pointer" data-action="close" title="Close">close</button>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template id="tmp-list-note">
+    <div class="notes" data-kind="item">
+      <div class="notes-inner">
+        <textarea class="text mousetrap" spellcheck="false"></textarea>
+        <div class="handle pos-absolute" style="bottom:0;right:0;">
+          <div class="icon-mate-o btn-icon">drag_pan</div>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+  
+  
+  <!-- # scripts -->
+  
+  <script> window.asd = console.log; </script>
+  <script>
+    ;(function() {
+      window.listening = function(selector, dataKey, eventType, callbacks) {
+        let elements = document.querySelectorAll(selector)
+        for (let el of elements) {
+          let callbackFunc = callbacks[el.dataset[dataKey]];
+          el.addEventListener(eventType, callbackFunc);
+        }
+      };
+    })();
+  </script>
+  <script>
+    window.child = function(selector, node=document) { return node.querySelectorAll(selector) };
+  </script>
+  <script src="js/core/component-loader.js"></script>
+  <script src="index.js"></script>
+  <script src="pwa-cacher.js"></script>
+  <script src="pwa.js"></script>
+  <script src="js/components/gsi-component.js"></script>
+  <script src="https://accounts.google.com/gsi/client" onload="compoGsi.InitTokenClient()" async defer></script>
+  <script src="https://unpkg.com/dexie@3.2.2"></script>
+  <script src="https://unpkg.com/dexie-export-import@1.0.3"></script>
+  
+</body>
+</html>
