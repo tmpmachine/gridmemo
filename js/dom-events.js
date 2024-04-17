@@ -2,6 +2,7 @@ let DOMEvents = (function() {
     
   let eventsMap = {
     onclick: {
+      'open-pip-canvas-module': () => ui.OpenPipCanvasModule(),
       'logout': () => compoGsi.Logout(),
       'authorize': () => compoGsi.RequestToken(),
     	'backup-to-cloud': () => app.BackupToCloud(),

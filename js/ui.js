@@ -7,7 +7,22 @@ let ui = (function() {
     Init,
     OpenWorkspaceFromCommandPalette,
     ToggleInsertSnippet,
+    OpenPipCanvasModule,
   };
+  
+  async function OpenPipCanvasModule() {
+    const player =  document.createElement('iframe');
+    player.style.width = '100%';
+    player.style.border = '0';
+    player.style.height = '100%';
+    player.src = 'https://pipcanvas.web.app/';
+    const pipWindow = await documentPictureInPicture.requestWindow();
+    pipWindow.document.body.append(player);
+    
+    const style = document.createElement('style');
+    style.textContent = 'body{margin:0}';
+    pipWindow.document.head.appendChild(style);
+  }
   
   function OpenWorkspaceFromCommandPalette(id) {
     uiWorkspace.OpenWorkspaceById(id);
