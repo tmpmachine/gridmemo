@@ -8,6 +8,7 @@ let uiWorkspace = (function() {
     OpenWorkspaceById,
     ListWorkspace,
     CreateWorkspace,
+    RefreshWorkspaceState,
   };
   
   function HandleClickWorkspaces(evt) {
@@ -63,9 +64,10 @@ let uiWorkspace = (function() {
     compoWorkspace.Commit();
     appData.Save();
     
-    ui.TaskListNotes();
+    uiNotes.ListNotesAsync();
     highlightActiveWorkspace();
     uiFileTab.refreshListTab();
+    RefreshWorkspaceState();
   }
   
   function renameWorkspaceById(id) {
@@ -105,7 +107,7 @@ let uiWorkspace = (function() {
     ListWorkspace();
     uiFileTab.refreshListTab();
     if (workspaces.id == activeWorkspaceId) {
-      ui.TaskListNotes();
+      uiNotes.ListNotesAsync();
     }
   }
   
@@ -120,13 +122,12 @@ let uiWorkspace = (function() {
     
     uiFileTab.openWorkspaceInTab(workspace.id);
     uiWorkspace.ListWorkspace();
-    TaskListNotes();
+    uiNotes.ListNotesAsync();
     
-    InsertNote();
+    uiNotes.InsertNote();
   }
   
-  function ListWorkspace() {
-    
+  function RefreshWorkspaceState() {
     let workspaces = compoWorkspace.GetGroups();
     let tabsCount = compoTabManager.CountAll();
     
@@ -143,7 +144,10 @@ let uiWorkspace = (function() {
         viewStateUtil.Add('workspace', ['no-open-workspace']);
       }
     }
-    
+  }
+  
+  function ListWorkspace() {
+    let workspaces = compoWorkspace.GetGroups();
     let docFrag = document.createDocumentFragment();
   
     for (let item of workspaces) {
@@ -156,11 +160,11 @@ let uiWorkspace = (function() {
       docFrag.append(el);
     }
 
-    $('#container-workspace').innerHTML = '';
-    $('#container-workspace').append(docFrag);
+    $('#container-workspace')?.replaceChildren('');
+    $('#container-workspace')?.append(docFrag);
     
     highlightActiveWorkspace();
-      
+    RefreshWorkspaceState();
   }
   
   function highlightActiveWorkspace() {

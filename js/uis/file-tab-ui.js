@@ -190,6 +190,8 @@ let uiFileTab = (function() {
     if (newActiveTab) {
       uiWorkspace.OpenWorkspaceById(newActiveTab.id);
     }
+    
+    uiWorkspace.RefreshWorkspaceState();
   }
   
   

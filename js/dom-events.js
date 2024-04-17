@@ -17,9 +17,8 @@ let DOMEvents = (function() {
     	'open-settings': () => viewStateUtil.Toggle('view-editor', ['settings', 'notes']),
     	'toggle-debug-log': () => viewStateUtil.Toggle('features-settings', ['debug-log-on', 'debug-log-off']),
       
-      'add-note': () => ui.AddNote(),
-      'insert-note': () => ui.InsertNote(),
-      'delete-selected-notes': () => ui.DeleteSelectedNote(),
+      'insert-note': () => uiNotes.InsertNote(),
+      'delete-selected-notes': () => uiNotes.DeleteSelectedNote(),
       'export-to-file': () => app.TaskExportDataToFile(),
       'import-from-file': () => app.TaskImportDataFromFile(),
       'clear-data': () => app.TaskClearData(),
@@ -28,7 +27,6 @@ let DOMEvents = (function() {
       'handle-mousedown-tab': (evt) => uiFileTab.HandleMouseDownTab(evt), 
     },
     ondblclick: {
-    	'on-dblclick-container-workspace': (evt) => ui.OnDblClickContainerWorkspace(evt),
     	'handle-dblclick-tab': (evt) => uiFileTab.HandleDblClickTab(evt),
     },
   };

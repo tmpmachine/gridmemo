@@ -93,7 +93,7 @@ let app = (function() {
     for (let item of d.dbData.data.data) {
       if (item.tableName == 'notes') {
         for (let d of item.rows) {
-          let result = await compoNotes.TaskUpdate(d);
+          let result = await compoNotes.UpdateAsync(d);
         }
       } 
     }
@@ -662,7 +662,7 @@ let message = (function() {
           foldData: el.querySelector('textarea')?.tempData?.editorSesionCustomFoldData,
         }
       };
-      await compoNotes.TaskUpdate(data);
+      await compoNotes.UpdateAsync(data);
       // console.log(data)
     }
     // localStorage.setItem(appUID,JSON.stringify(messages));

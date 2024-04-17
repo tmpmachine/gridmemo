@@ -29,6 +29,7 @@
         "js/ui.js",
         "js/uis/file-tab-ui.js",
         "js/uis/workspace-ui.js",
+        "js/uis/notes-ui.js",
 
         "js/lib/drive-api.js",
         "js/utils/uuidv4-util.js",

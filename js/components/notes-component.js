@@ -3,9 +3,9 @@ let compoNotes = (function() {
   'use strict';
   
   let SELF = {
-    TaskGetById,
-    TaskAdd,
-    TaskUpdate,
+    GetByIdAsync,
+    AddAsync,
+    UpdateAsync,
     DeleteById,
   };
   
@@ -22,7 +22,7 @@ let compoNotes = (function() {
     missionGroup: [],
   };
   
-  function TaskAdd(content) {
+  function AddAsync(content) {
     
     let id = generateId();
     let data = {
@@ -55,7 +55,7 @@ let compoNotes = (function() {
     });
   }
   
-  function TaskUpdate(data) {
+  function UpdateAsync(data) {
     return new Promise(async (resolve, reject) => {
       let db = await OpenDatabase();
       let transaction = db.transaction([OBJECT_STORE_NAME], 'readwrite');
@@ -88,7 +88,7 @@ let compoNotes = (function() {
     });
   }
   
-  function TaskGetById(id) {
+  function GetByIdAsync(id) {
     return new Promise(async (resolve, reject) => {
       let db = await OpenDatabase();
       const transaction = db.transaction(OBJECT_STORE_NAME, 'readonly');
