@@ -6,7 +6,6 @@ let compoWorkspace = (function() {
   let $$ = document.querySelectorAll.bind(document);
   
   let SELF = {
-    // Init,
     GetActiveGroup,
     GetActiveId: GetActiveGroupId,
     GetGroups,
@@ -15,15 +14,12 @@ let compoWorkspace = (function() {
     DeleteWorkspaceNoteById,
     GetItemIndexById,
     Commit,
-    
-    // # group
     AddGroup,
     deleteById,
     UpdateNoteIndex,
-    
     InitData,
-    
     ResetActiveId,
+    GetNotesByWorkspaceIdAsync,
   };
   
   const defaultGroupId = '';
@@ -34,6 +30,22 @@ let compoWorkspace = (function() {
       id: 0,
     },
   };
+  
+  async function GetNotesByWorkspaceIdAsync(id) {
+    let workspace = GetById(id);
+    if (!workspace) return null;
+    
+    let noteObjs = [];
+    
+    for (let noteId of workspace.noteIds) {
+      let result = await compoNotes.GetByIdAsync(noteId);
+      if (!result.success) continue;
+      
+      noteObjs.push(result.data);
+    }
+    
+    return noteObjs;
+  }
   
   function AddGroup(title) {
     let id = generateId();
@@ -104,11 +116,11 @@ let compoWorkspace = (function() {
       }
       
       $('#search-input').addEventListener('keydown', () => {
-        wgSearch.selectHints()
+        wgSearch.selectHints();
       });
       
       $('#search-input').addEventListener('input', (evt) => {
-        wgSearch.find(evt.target.value)
+        wgSearch.find(evt.target.value);
       });
       
       var wgSearchRes;

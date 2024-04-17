@@ -9,6 +9,7 @@ let uiWorkspace = (function() {
     ListWorkspace,
     CreateWorkspace,
     RefreshWorkspaceState,
+    OpenRecentWorkspace,
   };
   
   function HandleClickWorkspaces(evt) {
@@ -34,8 +35,16 @@ let uiWorkspace = (function() {
     
   }
   
+   async function OpenRecentWorkspace() {
+    let workspace = compoWorkspace.GetActiveGroup();
+    if (!workspace) return;
+    
+    let noteObjs = await compoNotes.GetAllByIdsAsync(workspace.noteIds);
+    await uiNotes.ListNotesAsync(noteObjs);
+    await compoTempWorkspace.StashAsync(workspace);
+  }
   
-  function OpenWorkspaceById(id) {
+  async function OpenWorkspaceById(id) {
     let activeWorkspaceId = compoWorkspace.GetActiveId(id);
     
     viewStateUtil.Remove('workspace', ['no-open-workspace']);
@@ -43,7 +52,9 @@ let uiWorkspace = (function() {
     if (id == activeWorkspaceId) return;
     
     let itemTab = compoTabManager.GetById(id);
-    
+    let gridNotesObj = uiNotes.GetAllGridContent();
+
+    await compoTempWorkspace.StoreTempAsync(activeWorkspaceId, gridNotesObj);
     compoWorkspace.SetActiveById(id);
 
     if (!itemTab) {
@@ -51,6 +62,7 @@ let uiWorkspace = (function() {
       let isTemp = true;
       
       if (compoTabManager.HasTemp()) {
+        await compoTempWorkspace.DeleteById(activeWorkspaceId);
         compoTabManager.ReplaceTemp(workspace.id, workspace.title);
       } else {
         compoTabManager.Add(workspace.id, workspace.title, isTemp);
@@ -64,7 +76,12 @@ let uiWorkspace = (function() {
     compoWorkspace.Commit();
     appData.Save();
     
-    uiNotes.ListNotesAsync();
+    // get from temp or from storage
+    let notes = await compoTempWorkspace.GetNotesByWorkspaceId(id);
+    if (!notes) {
+      notes = await compoWorkspace.GetNotesByWorkspaceIdAsync(id);
+    }
+    uiNotes.ListNotesAsync(notes);
     highlightActiveWorkspace();
     uiFileTab.refreshListTab();
     RefreshWorkspaceState();
@@ -90,6 +107,7 @@ let uiWorkspace = (function() {
     let isConfirm = window.confirm('Are you sure?');
     if (!isConfirm) return;
     
+    compoTempWorkspace.DeleteById(id);
     let activeWorkspaceId = compoWorkspace.GetActiveId();
     let workspaces = compoWorkspace.GetById(id);
     

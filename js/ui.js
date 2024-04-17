@@ -31,7 +31,7 @@ let ui = (function() {
     
     uiWorkspace.ListWorkspace();
     uiFileTab.refreshListTab();
-    uiNotes.ListNotesAsync();
+    uiWorkspace.OpenRecentWorkspace();
     initCommandPalette();
     
     attachCopyCutLinesListeners();
@@ -58,7 +58,7 @@ let ui = (function() {
           event.preventDefault();
           uiNotes.DeleteSelectedNote();
           break;
-        case 'alt+p': openPiPNote(); break;
+        case 'alt+p': uiDocPip.OpenWindow(); break;
         case 'alt+w': uiFileTab.closeOpenTab(); break;
         case 'alt+.': uiFileTab.openNextTab(); break;
         case 'alt+,': uiFileTab.openPrevTab(); break;
@@ -67,8 +67,6 @@ let ui = (function() {
     });
     
   }
-  
-  
   
   function initSortable() {
     new Sortable($('#wrapper'), {

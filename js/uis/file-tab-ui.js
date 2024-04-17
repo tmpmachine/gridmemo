@@ -139,14 +139,16 @@ let uiFileTab = (function() {
     $('#container-tab').append(docFrag);
   }
   
-  function openFileTabById(id) {
+  async function openFileTabById(targetWorkspaceId) {
     
-    let activeId = compoTabManager.GetActiveId();
+    let currentWorkspaceId = compoTabManager.GetActiveId();
     
-    if (id == activeId) return;
+    if (targetWorkspaceId == currentWorkspaceId) return;
     
-    uiWorkspace.OpenWorkspaceById(id);
-    compoTabManager.SetActiveById(id);
+    let gridNotesObj = uiNotes.GetAllGridContent();
+    await compoTempWorkspace.StoreTempAsync(currentWorkspaceId, gridNotesObj);
+    uiWorkspace.OpenWorkspaceById(targetWorkspaceId);
+    compoTabManager.SetActiveById(targetWorkspaceId);
     
     compoTabManager.Commit();
     appData.Save();
@@ -180,6 +182,7 @@ let uiFileTab = (function() {
       compoWorkspace.Commit();
     }
     
+    compoTempWorkspace.DeleteById(id);
     compoTabManager.DeleteById(id);
     compoTabManager.Commit();
     

@@ -21,6 +21,7 @@
         "https://cdn.jsdelivr.net/gh/ccampbell/mousetrap@v1.6.5/mousetrap.min.js",
         "js/lib/tmpmachine/lsdb@v1.0.0.js",
         "js/lib/hotkeys.min@v3.12.2.js",
+        "js/components/temp-workspace-component.js",
         "js/components/tab-manager-component.js",
         "js/components/backup-component.js",
         "js/components/workspace-component.js",
@@ -29,6 +30,7 @@
         "js/ui.js",
         "js/uis/file-tab-ui.js",
         "js/uis/workspace-ui.js",
+        "js/uis/docpip-ui.js",
         "js/uis/notes-ui.js",
 
         "js/lib/drive-api.js",

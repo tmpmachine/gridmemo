@@ -7,6 +7,7 @@ let compoNotes = (function() {
     AddAsync,
     UpdateAsync,
     DeleteById,
+    GetAllByIdsAsync,
   };
   
   // idb config
@@ -21,6 +22,19 @@ let compoNotes = (function() {
     activeGroupId: defaultGroupId,
     missionGroup: [],
   };
+  
+  async function GetAllByIdsAsync(noteIds) {
+    let noteObjs = [];
+    
+    for (let noteId of noteIds) {
+      let result = await GetByIdAsync(noteId);
+      if (!result.success) continue;
+      
+      noteObjs.push(result.data);
+    }
+    
+    return noteObjs;
+  }
   
   function AddAsync(content) {
     

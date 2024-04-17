@@ -8,25 +8,26 @@ let uiNotes = (function() {
     ListNotesAsync,
     GetActiveNoteId,
     InsertNote,
+    GetAllGridContent,
   };
   
-  async function ListNotesAsync() {
-    $('#wrapper').innerHTML = '';
+  function GetAllGridContent() {
+    let values = Array.from($$('._notesContainer textarea')).map(node => {
+      return {
+        id: node.closest('[data-kind="item"]')?.dataset.id,
+        content: node.value,
+      };
+    });
     
-    let workspace = compoWorkspace.GetActiveGroup();
-    
-    if (!workspace) return;
-    
-    for (let noteId of workspace.noteIds) {
-      
-      let result = await compoNotes.GetByIdAsync(noteId);
-      
-      if (!result.success) continue;
-      
-      appendNoteEl(result.data);
-    }
+    return values;
   }
   
+  async function ListNotesAsync(noteObjs = []) {
+    $('#wrapper')?.replaceChildren('');
+    for (let obj of noteObjs) {
+      appendNoteEl(obj);
+    }
+  }
   
   function toggleRGB(e) {
     for (let node of $$('#wrapper textarea')) {
@@ -108,13 +109,8 @@ let uiNotes = (function() {
   }
   
   function appendNoteEl(data) {
-    
     let docFrag = document.createDocumentFragment();
-
-    let el = window.templateSlot.fill({
-      data, 
-      template: document.querySelector('#tmp-list-note').content.cloneNode(true), 
-    });
+    let el = document.querySelector('#tmp-list-note').content.cloneNode(true);
     
     el.querySelector('[data-kind="item"]').dataset.id = data.id;
     el.querySelector('textarea').addEventListener('click', toggleRGB);
