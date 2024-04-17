@@ -93,10 +93,10 @@ let compoGsi = (function() {
       
       if (data.expires_at - now <= thirtySc) {
         while (local.isOnGoingAuthProcessStarted) {
-          await TaskWaitUntil(CheckNoOngoingAuthProcess, 500);
+          await utilAwaiter.WaitUntilAsync(CheckNoOngoingAuthProcess, 500);
         }
         RequestToken();
-        await TaskWaitUntil(CheckNoOngoingAuthProcess, 500);
+        await utilAwaiter.WaitUntilAsync(CheckNoOngoingAuthProcess, 500);
       } else {
         distributeTokenToComponents();
       }
@@ -109,18 +109,6 @@ let compoGsi = (function() {
   
   function CheckNoOngoingAuthProcess() {
     return !local.isOnGoingAuthProcessStarted;
-  }
-  
-  function TaskWaitUntil(stateCheckCallback, delay = 100) {
-    return new Promise(resolve => {
-        let interval = window.setInterval(() => {
-        let shouldResolve = stateCheckCallback();
-        if (shouldResolve) {
-            window.clearInterval(interval);
-            resolve();
-        }
-        }, delay);
-    });
   }
   
   function clearReference(data) {
@@ -176,22 +164,8 @@ let compoGsi = (function() {
   
   // todo: move
   async function TaskInitCompoDrive() {
-    await waitUntil(() => {
-      return (typeof(drive) != 'undefined');
-    });
+    await utilAwaiter.WaitUntilAsync(() => typeof(drive) != 'undefined');
     await drive.TaskReadAppData();
-  }
-  
-  function waitUntil(stateCheckCallback, delay = 100) {
-    return new Promise(resolve => {
-        let interval = window.setInterval(() => {
-        let shouldResolve = stateCheckCallback();
-        if (shouldResolve) {
-            window.clearInterval(interval);
-            resolve();
-        }
-        }, delay);
-    });
   }
   
   function RequestToken() {

@@ -166,7 +166,10 @@ let app = (function() {
   function Init() {
     // init components data
     compoWorkspace.InitData(appData.GetWorkspace());
-    appData.GetComponentData('compoGsi', (data) => compoGsi.InitData(data) );
+    appData.GetComponentData('compoGsi', async (data) => {
+      await utilAwaiter.WaitUntilAsync(() => typeof(compoGsi) != 'undefined');
+      compoGsi.InitData(data);
+    });
     appData.GetComponentData('compoTabManager', (data) => compoTabManager.Init(data) );
 
     ui.Init();
@@ -183,17 +186,6 @@ let app = (function() {
 
 let pipNoteEl;
 
-function waitUntil(checkFunc) {
-    return new Promise(resolve => {
-      let interval = window.setInterval(() => {
-        if (checkFunc()) {
-            window.clearInterval(interval);
-            resolve();
-        }
-      }, 1);
-    });
-}
-
 async function openPiPNote() {
     
   let $ = document.querySelector.bind(document);
@@ -202,9 +194,7 @@ async function openPiPNote() {
     
   if (pipWindow) {
     pipWindow.close();
-    await waitUntil(() => {
-      return (pipWindow === null);
-    });
+    await utilAwaiter.WaitUntilAsync( () => (pipWindow === null) );
   }
   
   pipNoteEl = $('.active');

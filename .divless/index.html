@@ -298,28 +298,14 @@
   
   
   <!-- # scripts -->
-  
-  <script> window.asd = console.log; </script>
-  <script>
-    ;(function() {
-      window.listening = function(selector, dataKey, eventType, callbacks) {
-        let elements = document.querySelectorAll(selector)
-        for (let el of elements) {
-          let callbackFunc = callbacks[el.dataset[dataKey]];
-          el.addEventListener(eventType, callbackFunc);
-        }
-      };
-    })();
-  </script>
-  <script>
-    window.child = function(selector, node=document) { return node.querySelectorAll(selector) };
-  </script>
+  <script src="js/utils/awaiter-util.js"></script>
   <script src="js/core/component-loader.js"></script>
   <script src="index.js"></script>
+  
   <script src="pwa-cacher.js"></script>
   <script src="pwa.js"></script>
-  <script src="js/components/gsi-component.js"></script>
-  <script src="https://accounts.google.com/gsi/client" onload="compoGsi.InitTokenClient()" async defer></script>
+
+  <script src="https://accounts.google.com/gsi/client" onload="_onGsiClientReadyAsync()" async defer></script>
   <script src="https://unpkg.com/dexie@3.2.2"></script>
   <script src="https://unpkg.com/dexie-export-import@1.0.3"></script>
   

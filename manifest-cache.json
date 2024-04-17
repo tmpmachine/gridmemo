@@ -22,6 +22,7 @@
     "js/components/notes-component.js"
   ],
   "uis": [
+    "js/uis/notes-ui.js",
     "js/uis/workspace-ui.js",
     "js/uis/file-tab-ui.js"
   ],
@@ -34,6 +35,7 @@
     "js/view-states.js"
   ],
   "utils": [
+    "js/utils/awaiter-util.js",
     "js/utils/view-state-util.js",
     "js/utils/uuidv4-util.js"
   ],

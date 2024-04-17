@@ -48,6 +48,7 @@
     {
       urls: [
         "js/lib/ace@1.32.7/ace.min.js",
+        "js/components/gsi-component.js",
         // "https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.min.js",
       ],
       callback: function() {
@@ -61,3 +62,8 @@
   ]);
   
 })();
+
+async function _onGsiClientReadyAsync() {
+  await utilAwaiter.WaitUntilAsync(() => typeof(compoGsi) != 'undefined');
+  compoGsi.InitTokenClient();
+}
