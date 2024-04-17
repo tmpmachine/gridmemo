@@ -1,3 +1,5 @@
+let pipWindow;
+
 (function() {
     
   'use strict';
@@ -25,7 +27,9 @@
         "js/components/tab-manager-component.js",
         "js/components/backup-component.js",
         "js/components/workspace-component.js",
+        "js/components/notif-component.js",
         "js/components/notes-component.js",
+        "js/components/code-editor-component.js",
 
         "js/ui.js",
         "js/uis/file-tab-ui.js",
@@ -58,7 +62,7 @@
         ace.config.setModuleUrl('ace/mode/markdown', 'js/lib/ace@1.32.7/mode-markdown.min.js');
         // ace.config.setModuleUrl('ace/theme/my-custom-theme', '/self-hosted/assets/ace/theme-custom.js');
         
-        initPiPEditor();
+        compoCodeEditor.InitPiPEditor();
       }
     },
   ]);

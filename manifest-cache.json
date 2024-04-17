@@ -15,9 +15,11 @@
     "https://unpkg.com/dexie@3.2.2"
   ],
   "components": [
+    "js/components/code-editor-component.js",
     "js/components/tab-manager-component.js",
     "js/components/temp-workspace-component.js",
     "js/components/workspace-component.js",
+    "js/components/notif-component.js",
     "js/components/gsi-component.js",
     "js/components/backup-component.js",
     "js/components/notes-component.js"

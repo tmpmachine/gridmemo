@@ -4,6 +4,7 @@ let uiDocPip = (function() {
   
   let SELF = {
     OpenWindow,
+    SetPipEditorData,
   };
   
   let local =  {
@@ -11,6 +12,24 @@ let uiDocPip = (function() {
     noteId: null,
   };
   let pipNoteEl;
+  
+  function SetPipEditorData() {
+    if (!(pipWindow && pipNoteEl)) return;
+    
+    let pipTextarea = pipNoteEl.querySelector('textarea');
+    
+    pipTextarea.value = editor.getValue();
+    pipTextarea.dataset.windowWidth = pipWindow.outerWidth;
+    pipTextarea.dataset.windowHeight = pipWindow.outerHeight;
+    pipTextarea.tempData = {
+      editorSesionCustomFoldData: editor.session.getAllFolds().map(x => {
+        return {
+          placeholder: x.placeholder,
+          foldRange: JSON.parse(JSON.stringify(x.range)),
+        };
+      }),
+    };
+  }
   
   async function OpenWindow() {
       
@@ -68,14 +87,15 @@ let uiDocPip = (function() {
     let pipTextarea = pipNoteEl.querySelector('textarea');
     let js = ace.createEditSession(pipTextarea.value);
     
+    let editor = compoCodeEditor.GetEditor();
     editor.setSession(js);
     // restore folds session
     if (pipTextarea.tempData?.editorSesionCustomFoldData != null) {
       for (let item of pipTextarea.tempData?.editorSesionCustomFoldData) {
-        editor.session.addFold(item.placeholder, createAceRange(item.foldRange));
+        editor.session.addFold(item.placeholder, compoCodeEditor.CreateAceRange(item.foldRange));
       }
     }
-    editor.session.setUseWrapMode(_isWrapMode);
+    editor.session.setUseWrapMode(compoCodeEditor.GetWrapMode());
     editor.session.setMode("ace/mode/markdown");
     
     // pipNoteEl.parentElement.classList.add('pip');
@@ -84,6 +104,7 @@ let uiDocPip = (function() {
   }
   
   function onHide(event) {
+    let editor = compoCodeEditor.GetEditor();
     const playerContainer = document.querySelector('#container-editor-hidden');
     const pipPlayer = event.target.querySelector('#container-editor');
     let pipContent = editor.getValue();

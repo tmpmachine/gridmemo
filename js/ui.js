@@ -52,7 +52,7 @@ let ui = (function() {
           break;
         case 'ctrl+s': 
           event.preventDefault();
-          saveNotes();
+          app.save();
           break;
         case 'ctrl+d': 
           event.preventDefault();
@@ -157,6 +157,80 @@ let ui = (function() {
       }
     });
   }
+  
+  function shiftLine(event) {
+    
+    let node = event.target;
+    if (!node.matches('textarea')) {
+      return;
+    }
+    textarea = node;
+    
+    if (event.ctrlKey && event.shiftKey && (event.key === "ArrowUp" || event.key === "ArrowDown")) {
+      event.preventDefault();
+      
+      const textarea = event.target;
+      const value = textarea.value;
+      const selectionStart = textarea.selectionStart;
+      const selectionEnd = textarea.selectionEnd;
+      const lines = value.split("\n");
+  
+      // Calculate the index of the line to shift
+      let lineIndex = value.substr(0, selectionStart).split("\n").length - 1;
+      if (event.key === "ArrowUp") {
+        // Make sure the line index is within bounds
+        if (lineIndex < 0 || lineIndex >= lines.length) {
+          return;
+        }
+        // lineIndex--;
+      } else {
+        // Make sure the line index is within bounds
+        if (lineIndex < 0 || lineIndex >= lines.length) {
+          return;
+        }
+      }
+  
+      // Remove the line to be shifted from the array
+      const lineToShift = lines.splice(lineIndex, 1)[0];
+  
+      // Calculate the index of the line to insert the shifted line
+      let insertIndex = lineIndex;
+      if (event.key === "ArrowDown") {
+        insertIndex++;
+      } else {
+        insertIndex--;
+      }
+  
+      // Make sure the insert index is within bounds
+      if (insertIndex < 0) {
+        insertIndex = 0;
+      } else if (insertIndex > lines.length) {
+        insertIndex = lines.length;
+      }
+      // Insert the shifted line into the array
+      lines.splice(insertIndex, 0, lineToShift);
+  
+      // Update the textarea value and selection position
+      textarea.value = lines.join("\n");
+  
+      let result = lines.reduce((acc, curr, index) => {
+        if (event.key === "ArrowDown" && index <= lineIndex) {
+          return acc + curr.length + 1;
+        } else if (event.key === "ArrowUp" && index < lineIndex) {
+          return acc + curr.length + 1;
+        } 
+        return acc;
+      }, 0);
+      
+      if (event.key === "ArrowUp") {
+        result -= lineToShift.length + 1;
+        result = Math.max(0, result);
+      } 
+      
+      textarea.setSelectionRange(result, result);
+    }
+  }
+
   
   function initCommandPalette() {
     // command palette
