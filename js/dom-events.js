@@ -28,6 +28,7 @@ let DOMEvents = (function() {
       'handle-mousedown-tab': (evt) => uiFileTab.HandleMouseDownTab(evt), 
     },
     ondblclick: {
+      'handle-dbl-click-workspace': (evt) => uiWorkspace.HandleDblClick(evt),
     	'handle-dblclick-tab': (evt) => uiFileTab.HandleDblClickTab(evt),
     },
   };

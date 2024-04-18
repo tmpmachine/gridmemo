@@ -10,7 +10,21 @@ let uiWorkspace = (function() {
     CreateWorkspace,
     RefreshWorkspaceState,
     OpenRecentWorkspace,
+    HandleDblClick,
   };
+  
+  function HandleDblClick(evt) {
+    // make sure not double click on action buttons
+    if (evt.target.closest('[data-action]')) return;
+    
+    let targetEl = evt.target;
+    let itemEl = targetEl?.closest('[data-kind="itemWorkspace"]');
+    let id = itemEl?.dataset.id;
+    
+    if (!itemEl) return;
+    
+    uiFileTab.SetPersistentTabByWorkspaceId(id);
+  }
   
   function HandleClickWorkspaces(evt) {
     
@@ -23,7 +37,6 @@ let uiWorkspace = (function() {
     let id = itemEl?.dataset.id;
     
     if (!itemEl) return;
-    
     
     // todo
     switch (action) {

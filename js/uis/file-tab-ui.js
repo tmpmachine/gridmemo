@@ -11,6 +11,7 @@ let uiFileTab = (function() {
     openPrevTab,
     closeOpenTab,
     openNextTab,
+    SetPersistentTabByWorkspaceId,
   };
   
   function handleClickActions(evt, data) {
@@ -83,6 +84,10 @@ let uiFileTab = (function() {
     
     let id = itemEl.dataset.id;
     
+    SetPersistentTabByWorkspaceId(id);
+  }
+  
+  function SetPersistentTabByWorkspaceId(id) {
     let item = compoTabManager.GetById(id);
     if (!item.isTemp) return;
     
