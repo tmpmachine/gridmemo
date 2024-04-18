@@ -5,9 +5,9 @@ let ui = (function() {
   
   let SELF = {
     Init,
-    OpenWorkspaceFromCommandPalette,
     ToggleInsertSnippet,
     OpenPipCanvasModule,
+    OpenWorkspaceByIdAsync,
   };
   
   async function OpenPipCanvasModule() {
@@ -24,15 +24,50 @@ let ui = (function() {
     pipWindow.document.head.appendChild(style);
   }
   
-  function OpenWorkspaceFromCommandPalette(id) {
-    uiWorkspace.OpenWorkspaceById(id);
-  }
-  
-  function syncFileTitleOnTab(id, title) {
-    let item = compoTabManager.GetById(id);
-    if (!item) return;
+  async function OpenWorkspaceByIdAsync(id) {
     
-    item.title = title;
+    let currentWorkspaceId = compoTabManager.GetActiveId();
+    
+    if (id == currentWorkspaceId) return;
+    
+    let gridNotesObj = uiNotes.GetAllGridContent();
+    let itemTab = compoTabManager.GetById(id);
+    
+    await compoTempWorkspace.StoreTempAsync(currentWorkspaceId, gridNotesObj);
+    
+    if (!itemTab) {
+      let workspace = compoWorkspace.GetById(id);
+      let isTemp = true;
+      
+      if (compoTabManager.HasTemp()) {
+        await compoTempWorkspace.DeleteById(currentWorkspaceId);
+        compoTabManager.ReplaceTemp(workspace.id, workspace.title);
+      } else {
+        compoTabManager.Add(workspace.id, workspace.title, isTemp);
+      }
+    }
+    
+    // get from temp or from storage
+    let notes = await compoTempWorkspace.GetNotesByWorkspaceId(id);
+    if (!notes) {
+      notes = await compoWorkspace.GetNotesByWorkspaceIdAsync(id);
+    }
+    
+    // update states
+    compoTabManager.SetActiveById(id);
+    compoWorkspace.SetActiveById(id);
+    
+    // commit & save
+    compoWorkspace.Commit();
+    compoTabManager.Commit();
+    appData.Save();
+    
+    // refresh UI
+    uiNotes.ListNotesAsync(notes);
+    uiWorkspace.HighlightActiveWorkspace();
+    uiFileTab.refreshListTab();
+    uiWorkspace.RefreshWorkspaceState();
+    
   }
   
   function ApplyDocPiPFocusHackFix() {

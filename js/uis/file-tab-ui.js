@@ -41,7 +41,7 @@ let uiFileTab = (function() {
     let item = compoTabManager.GetPrevious();
     if (!item) return;
     
-    openFileTabById(item.id);
+    ui.OpenWorkspaceByIdAsync(item.id);
   }
   
   function closeOpenTab() {
@@ -55,7 +55,7 @@ let uiFileTab = (function() {
     let item = compoTabManager.GetNext();
     if (!item) return;
     
-    openFileTabById(item.id);
+    ui.OpenWorkspaceByIdAsync(item.id);
   }
   
   function openWorkspaceInTab(id) {
@@ -113,7 +113,7 @@ let uiFileTab = (function() {
     let action = actionEl.dataset.action;
     
     switch (action) {
-      case 'open': openFileTabById(id); break;
+      case 'open': ui.OpenWorkspaceByIdAsync(id); break;
       case 'close': closeFileTab(id); break;
     }
   }
@@ -143,24 +143,6 @@ let uiFileTab = (function() {
     
     $('#container-tab').append(docFrag);
   }
-  
-  async function openFileTabById(targetWorkspaceId) {
-    
-    let currentWorkspaceId = compoTabManager.GetActiveId();
-    
-    if (targetWorkspaceId == currentWorkspaceId) return;
-    
-    let gridNotesObj = uiNotes.GetAllGridContent();
-    await compoTempWorkspace.StoreTempAsync(currentWorkspaceId, gridNotesObj);
-    uiWorkspace.OpenWorkspaceById(targetWorkspaceId);
-    compoTabManager.SetActiveById(targetWorkspaceId);
-    
-    compoTabManager.Commit();
-    appData.Save();
-    
-    refreshListTab();
-  }
-  
   
   function setActiveTabBeforeDeletionOnId(id) {
     if (compoTabManager.CountAll() < 2) return null;
@@ -196,7 +178,7 @@ let uiFileTab = (function() {
     refreshListTab();
     
     if (newActiveTab) {
-      uiWorkspace.OpenWorkspaceById(newActiveTab.id);
+      ui.OpenWorkspaceByIdAsync(newActiveTab.id);
     }
     
     uiWorkspace.RefreshWorkspaceState();

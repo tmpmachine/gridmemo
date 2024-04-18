@@ -5,13 +5,20 @@ let uiWorkspace = (function() {
   
   let SELF = {
     HandleClickWorkspaces,
-    OpenWorkspaceById,
     ListWorkspace,
     CreateWorkspace,
     RefreshWorkspaceState,
     OpenRecentWorkspace,
     HandleDblClick,
+    HighlightActiveWorkspace,
   };
+  
+  function syncFileTitleOnTab(id, title) {
+    let item = compoTabManager.GetById(id);
+    if (!item) return;
+    
+    item.title = title;
+  }
   
   function HandleDblClick(evt) {
     // make sure not double click on action buttons
@@ -40,10 +47,10 @@ let uiWorkspace = (function() {
     
     // todo
     switch (action) {
-      case 'open': OpenWorkspaceById(id); break;
+      case 'open': ui.OpenWorkspaceByIdAsync(id); break;
       case 'rename': renameWorkspaceById(id); break;
       case 'delete': deleteWorkspaceById(id); break;
-      default: OpenWorkspaceById(id); break;
+      default: ui.OpenWorkspaceByIdAsync(id); break;
     }
     
   }
@@ -55,49 +62,6 @@ let uiWorkspace = (function() {
     let noteObjs = await compoNotes.GetAllByIdsAsync(workspace.noteIds);
     await uiNotes.ListNotesAsync(noteObjs);
     await compoTempWorkspace.StashAsync(workspace);
-  }
-  
-  async function OpenWorkspaceById(id) {
-    let activeWorkspaceId = compoWorkspace.GetActiveId(id);
-    
-    viewStateUtil.Remove('workspace', ['no-open-workspace']);
-
-    if (id == activeWorkspaceId) return;
-    
-    let itemTab = compoTabManager.GetById(id);
-    let gridNotesObj = uiNotes.GetAllGridContent();
-
-    await compoTempWorkspace.StoreTempAsync(activeWorkspaceId, gridNotesObj);
-    compoWorkspace.SetActiveById(id);
-
-    if (!itemTab) {
-      let workspace = compoWorkspace.GetById(id);
-      let isTemp = true;
-      
-      if (compoTabManager.HasTemp()) {
-        await compoTempWorkspace.DeleteById(activeWorkspaceId);
-        compoTabManager.ReplaceTemp(workspace.id, workspace.title);
-      } else {
-        compoTabManager.Add(workspace.id, workspace.title, isTemp);
-      }
-      // compoTabManager.UnsetActive();
-    }
-    
-    compoTabManager.SetActiveById(id);
-    
-    compoTabManager.Commit();
-    compoWorkspace.Commit();
-    appData.Save();
-    
-    // get from temp or from storage
-    let notes = await compoTempWorkspace.GetNotesByWorkspaceId(id);
-    if (!notes) {
-      notes = await compoWorkspace.GetNotesByWorkspaceIdAsync(id);
-    }
-    uiNotes.ListNotesAsync(notes);
-    highlightActiveWorkspace();
-    uiFileTab.refreshListTab();
-    RefreshWorkspaceState();
   }
   
   function renameWorkspaceById(id) {
@@ -194,11 +158,11 @@ let uiWorkspace = (function() {
     $('#container-workspace')?.replaceChildren('');
     $('#container-workspace')?.append(docFrag);
     
-    highlightActiveWorkspace();
+    HighlightActiveWorkspace();
     RefreshWorkspaceState();
   }
   
-  function highlightActiveWorkspace() {
+  function HighlightActiveWorkspace() {
     let activeWorkspaceId = compoWorkspace.GetActiveId();
     for (let el of $$('#container-workspace [data-kind="itemWorkspace"]')) {
       let isActive = (el.dataset.id == activeWorkspaceId);
