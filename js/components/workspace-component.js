@@ -128,7 +128,7 @@ let compoWorkspace = (function() {
         hints: [],
         pageId: '',
         callback: (data) => {
-          ui.OpenWorkspaceFromCommandPalette(data.id);
+          ui.OpenWorkspaceByIdAsync(data.id);
         },
         keywords: [],
         match: function(value) {
