@@ -17,7 +17,8 @@ let uiDocPip = (function() {
     if (!(pipWindow && pipNoteEl)) return;
     
     let pipTextarea = pipNoteEl.querySelector('textarea');
-    
+
+    let editor = compoCodeEditor.GetEditor();
     pipTextarea.value = editor.getValue();
     pipTextarea.dataset.windowWidth = pipWindow.outerWidth;
     pipTextarea.dataset.windowHeight = pipWindow.outerHeight;
