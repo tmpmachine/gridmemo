@@ -26,7 +26,7 @@ let ui = (function() {
   
   async function OpenWorkspaceByIdAsync(id) {
     
-    let currentWorkspaceId = compoTabManager.GetActiveId();
+    let currentWorkspaceId = compoWorkspace.GetActiveId();
     
     if (id == currentWorkspaceId) return;
     
@@ -94,7 +94,7 @@ let ui = (function() {
   }
   
   function attachListeners() {
-    hotkeys('esc,ctrl+s,ctrl+d,alt+p,alt+w,alt+.,alt+,,alt+n', function (event, handler){
+    hotkeys('esc,ctrl+s,ctrl+d,alt+p,alt+w,alt+.,alt+,,alt+n', async function(event, handler){
       switch (handler.key) {
         case 'esc':
           if (document.activeElement.classList.contains('text')) {
@@ -104,7 +104,8 @@ let ui = (function() {
           break;
         case 'ctrl+s': 
           event.preventDefault();
-          app.SaveAsync();
+          await app.SaveAsync();
+          await compoTempWorkspace.RecaptureCurrentWorkspaceAsync();
           break;
         case 'ctrl+d': 
           event.preventDefault();

@@ -9,11 +9,24 @@ let compoTempWorkspace = (function() {
     CaptureNotesAsync,
     HasUnsavedChanges,
     HasUnsavedChangesById,
+    RecaptureCurrentWorkspaceAsync,
   };
   
   let data = {
     items: [],
   };
+  
+  async function RecaptureCurrentWorkspaceAsync() {
+    let currentWorkspaceId = compoWorkspace.GetActiveId();
+    
+    DeleteById(currentWorkspaceId);
+    await CaptureNotesAsync(currentWorkspaceId);
+    
+    // check if there's no unsaved changes
+    if (!HasUnsavedChanges()) {
+      app.UnlistenAppUnload();
+    }
+  }
   
   function UpdateNoteContentById(workspaceId, noteId, content) {
     let item = GetItemById(workspaceId);
@@ -43,12 +56,12 @@ let compoTempWorkspace = (function() {
   
   async function CaptureNotesAsync(workspaceId, gridNotesObj) {
     let itemIndex = GetItemIndexById(workspaceId);
-    
     if (itemIndex >= 0) return;
 
     if (!gridNotesObj) {
       gridNotesObj = await compoWorkspace.GetNotesByWorkspaceIdAsync(workspaceId);
     }
+    if (!gridNotesObj) return;
     
     data.items.push({
       captures: gridNotesObj.map(obj => {

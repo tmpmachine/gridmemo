@@ -26,8 +26,6 @@ let app = (function() {
   
   async function SaveAsync() {
     
-    let currentWorkspaceId = compoTabManager.GetActiveId();
-    
     uiDocPip.SetPipEditorData();
     
     for (let el of document.querySelectorAll('.notes')) {
@@ -44,15 +42,6 @@ let app = (function() {
       };
 
       await compoNotes.UpdateAsync(data);
-    }
-    
-    // re-capture notes
-    compoTempWorkspace.DeleteById(currentWorkspaceId);
-    await compoTempWorkspace.CaptureNotesAsync(currentWorkspaceId);
-    
-    // check if there's no unsaved changes
-    if (!compoTempWorkspace.HasUnsavedChanges()) {
-      app.UnlistenAppUnload();
     }
     
     compoNotif.Pop('Saved');
