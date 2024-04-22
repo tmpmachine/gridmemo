@@ -8,9 +8,12 @@ let uiFileTab = (function() {
     HandleMouseDownTab,
     openWorkspaceInTab,
     refreshListTab,
-    openPrevTab,
-    closeOpenTab,
-    openNextTab,
+    OpenNextTab,
+    OpenPrevTab,
+    CloseOpenTab,
+    closeOpenTab: CloseOpenTab,
+    openPrevTab: OpenPrevTab,
+    openNextTab: OpenNextTab,
     SetPersistentTabByWorkspaceId,
   };
   
@@ -37,21 +40,21 @@ let uiFileTab = (function() {
     handleClickActions(evt, data);
   }
 
-  function openPrevTab() {
+  function OpenPrevTab() {
     let item = compoTabManager.GetPrevious();
     if (!item) return;
     
     ui.OpenWorkspaceByIdAsync(item.id);
   }
   
-  function closeOpenTab() {
+  function CloseOpenTab() {
     let item = compoTabManager.GetActive();
     if (!item) return;
     
     closeFileTab(item.id);
   }
   
-  function openNextTab() {
+  function OpenNextTab() {
     let item = compoTabManager.GetNext();
     if (!item) return;
     
