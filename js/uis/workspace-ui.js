@@ -60,8 +60,9 @@ let uiWorkspace = (function() {
     if (!workspace) return;
     
     let noteObjs = await compoNotes.GetAllByIdsAsync(workspace.noteIds);
+    
+    compoTempWorkspace.CaptureNotesAsync(workspace.id, noteObjs);
     await uiNotes.ListNotesAsync(noteObjs);
-    await compoTempWorkspace.StashAsync(workspace);
   }
   
   function renameWorkspaceById(id) {

@@ -30,6 +30,9 @@ let ui = (function() {
     
     if (id == currentWorkspaceId) return;
     
+    // capture notes
+    compoTempWorkspace.CaptureNotesAsync(id);
+    
     let gridNotesObj = uiNotes.GetAllGridContent();
     let itemTab = compoTabManager.GetById(id);
     
@@ -102,7 +105,7 @@ let ui = (function() {
           break;
         case 'ctrl+s': 
           event.preventDefault();
-          app.save();
+          app.SaveAsync();
           break;
         case 'ctrl+d': 
           event.preventDefault();

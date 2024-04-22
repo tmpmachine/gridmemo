@@ -4,7 +4,8 @@ let app = (function() {
   
   let SELF = {
     Init,
-    save,
+    SaveAsync,
+    save: SaveAsync,
     BackupToCloud,
     RestoreFromCloud,
     GetDataManager,
@@ -23,7 +24,9 @@ let app = (function() {
   const DB_NAME = 'app-MjU1MTUyNjA-db';
   const DB_VERSION = 1;
   
-  async function save() {
+  async function SaveAsync() {
+    
+    let currentWorkspaceId = compoTabManager.GetActiveId();
     
     uiDocPip.SetPipEditorData();
     
@@ -39,11 +42,20 @@ let app = (function() {
           foldData: el.querySelector('textarea')?.tempData?.editorSesionCustomFoldData,
         }
       };
+
       await compoNotes.UpdateAsync(data);
     }
     
-    compoNotif.Pop('Saved');
+    // re-capture notes
+    compoTempWorkspace.DeleteById(currentWorkspaceId);
+    await compoTempWorkspace.CaptureNotesAsync(currentWorkspaceId);
     
+    // check if there's no unsaved changes
+    if (!compoTempWorkspace.HasUnsavedChanges()) {
+      app.UnlistenAppUnload();
+    }
+    
+    compoNotif.Pop('Saved');
   }
   
   async function TaskExportDataToFile() {
