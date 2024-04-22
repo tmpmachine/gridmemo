@@ -3,9 +3,6 @@ let compoTabManager = (function() {
   'use strict';
   
   let SELF = {
-    
-    // # generic methods
-    
     Init,
     GetActive,
     GetActiveId,
@@ -15,14 +12,11 @@ let compoTabManager = (function() {
     GetPrevious,
     SetActiveById,
     GetIndexById,
-    // ToggleActiveById,
     UnsetActive,
     Commit,
     Add,
     CountAll,
-    // UpdateById,
     DeleteById,
-    
     ReplaceTemp,
     HasTemp,
   };
@@ -76,17 +70,6 @@ let compoTabManager = (function() {
     return true;
   }
   
-  function ToggleActiveById(id) {
-    let activeId = GetActiveId();
-    if (activeId === id) {
-      UnsetActive();
-    } else {
-      return SetActiveById(id);
-    }
-    
-    return true;
-  }
-  
   function DeleteById(id) {
     let delIndex = getItemIndexById(id);
     if (delIndex < 0) return null;
@@ -96,19 +79,6 @@ let compoTabManager = (function() {
     
     if (data.items.length == 0 || item[0].id == activeId) {
       UnsetActive();
-    }
-    
-    return item;
-  }
-  
-  function UpdateById(incomingData, id) {
-    let item = GetById(id);
-    if (!item) return null;
-    
-    for (let key in incomingData) {
-      if (typeof(item[key]) != 'undefined' && typeof(item[key]) == typeof(incomingData[key])) {
-        item[key] = incomingData[key];
-      }
     }
     
     return item;
