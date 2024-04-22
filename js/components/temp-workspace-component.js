@@ -20,10 +20,20 @@ let compoTempWorkspace = (function() {
       note.content = content;
     }
   }
+
+  function countItems() {
+    return data.items.length;
+  }
   
   function DeleteById(id) {
     let delIndex = GetItemIndexById(id);
     if (delIndex < 0) return null;
+    
+    // check if there's no unsaved changes
+    let itemsCount = countItems();
+    if (itemsCount === 0) {
+      app.UnlistenAppUnload();
+    }
     
     return data.items.splice(delIndex, 1);
   }
@@ -50,6 +60,8 @@ let compoTempWorkspace = (function() {
     } else {
       data.items[itemIndex].notes = gridNotesObj;
     }
+
+    app.ListenAppUnload();
   }
   
   function GetItemById(id) {

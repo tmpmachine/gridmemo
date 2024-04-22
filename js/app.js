@@ -14,6 +14,8 @@ let app = (function() {
     TaskImportDataFromFile,
     TaskImportDataFromJSON,
     Log,
+    ListenAppUnload,
+    UnlistenAppUnload,
   };
   
   // db config
@@ -196,6 +198,19 @@ let app = (function() {
   
   }
   
+  function ListenAppUnload() {
+    window.addEventListener('beforeunload', handleBeforeUnloadEvent);
+  }
+  
+  function UnlistenAppUnload() {
+    window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
+  }
+  
+  function handleBeforeUnloadEvent(evt) {
+    evt.preventDefault();
+    evt.returnValue = true;
+  }
+
   function Log(message) {
     $('#container-debug-log').innerHTML += `\n${message}`;
   }
