@@ -95,7 +95,6 @@
               </div>
             </div>
             
-            <!-- # container notes -->
             <div class="d-grid ov-hidden h-100">
               
               <div class="h-100 ov-hidden" data-view-group="workspace" data-view-name="has-workspace">
@@ -109,7 +108,8 @@
                   </div>
                 </div>
                 <div class="h-100 ov-auto">
-                  <div id="wrapper" class="_notesContainer" style="height:100%;display:grid;grid-template-columns:repeat(4,1fr);"></div>
+                  <!-- # container notes -->
+                  <div id="wrapper" class="_notesContainer" data-onkeydown="handle-notes-keydown" style="height:100%;display:grid;grid-template-columns:repeat(4,1fr);"></div>
                 </div>
                 
               </div>
@@ -323,8 +323,8 @@
   </template>
   
   <template id="tmp-list-workspace">
-    <!-- # tmp-list-workspace -->
     <div class="item d-grid" data-kind="itemWorkspace" style="padding:0.3em 0.5em;gap:0.5rem;">
+      <!-- ^# tmp-list-workspace -->
       <span data-slot="title"></span>
       <div class="d-flex justify-content-end" style="gap:0.3em;">
         <button class="btn-icon icon-mate-o obsoletes" data-action="open" title="open">chevron_right</button>
@@ -334,18 +334,20 @@
     </div>
   </template>
   <template id="tmp-list-tab">
-    <!-- # list tab -->
-    <div class="item" data-kind="itemFileTab">
+    <div class="item" data-kind="itemFileTab" data-view-group="itemFileTab">
+      <!-- ^# tmp-list-tab -->
       <div class="d-flex">
         <span class="title" data-slot="title" data-action="open"></span>
         <div class="d-flex justify-content-end" style="gap:0.3em;">
-          <button class="btn-icon icon-mate-o cursor-pointer" data-action="close" title="Close">close</button>
+          <button class="btn-icon icon-mate-o cursor-pointer" data-action="close" title="Close" data-view-group="itemFileTab" data-view-name-not="dirty">close</button>
+          <button class="btn-icon icon-mate-o cursor-pointer" data-action="close" title="Close" data-view-group="itemFileTab" data-view-name="dirty">fiber_manual_record</button>
         </div>
       </div>
     </div>
   </template>
   <template id="tmp-list-note">
     <div class="notes" data-kind="item">
+      <!-- ^# tmp-list-note -->
       <div class="notes-inner">
         <textarea class="text mousetrap" spellcheck="false"></textarea>
         <div class="handle pos-absolute" style="bottom:0;right:0;">

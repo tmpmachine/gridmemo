@@ -8,7 +8,26 @@ let ui = (function() {
     ToggleInsertSnippet,
     OpenPipCanvasModule,
     OpenWorkspaceByIdAsync,
+    HandleNotesKeydown,
   };
+  
+  let noteInputDebounce = debounce(130, () => {
+    
+  });
+  
+  function HandleNotesKeydown(evt) {
+    noteInputDebounce();
+  }
+  
+  function debounce(time, callback) {
+    let timeoutId;
+    return function(...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        callback(...args);
+      }, time);
+    };
+  }
   
   async function OpenPipCanvasModule() {
     const player =  document.createElement('iframe');

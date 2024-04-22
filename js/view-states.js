@@ -14,6 +14,12 @@ let viewStates = (function() {
         'sidebar'
       ]
     },
+    // file tab item
+    {
+      group: 'fileTabItem',
+      states: ['dirty'],
+      inverseStates: ['dirty']
+    },
     // features cloud
     {
       group: 'features-cloud',
