@@ -54,7 +54,7 @@ let compoCodeEditor = (function() {
       exec: function() {
         event.preventDefault();
         app.save();
-        notifikasi.pop('Saved');
+        compoNotif.Pop('Saved');
       }
     });
     
