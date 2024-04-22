@@ -91,7 +91,6 @@ let ui = (function() {
   }
   
   function attachListeners() {
-    
     hotkeys('esc,ctrl+s,ctrl+d,alt+p,alt+w,alt+.,alt+,,alt+n', function (event, handler){
       switch (handler.key) {
         case 'esc':
@@ -115,7 +114,6 @@ let ui = (function() {
         case 'alt+n': uiNotes.InsertNote(); break;
       }
     });
-    
   }
   
   function initSortable() {
