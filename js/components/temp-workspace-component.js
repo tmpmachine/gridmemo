@@ -8,6 +8,7 @@ let compoTempWorkspace = (function() {
     UpdateNoteContentById,
     CaptureNotesAsync,
     HasUnsavedChanges,
+    HasUnsavedChangesById,
   };
   
   let data = {
@@ -76,6 +77,12 @@ let compoTempWorkspace = (function() {
   function HasUnsavedChanges() {
     let items = GetAllItems();
     let hasUnsavedChanges = items.some(item => item.notes);
+    return hasUnsavedChanges;
+  }
+  
+  function HasUnsavedChangesById(id) {
+    let items = GetAllItems();
+    let hasUnsavedChanges = items.some(item => item.notes && item.id == id);
     return hasUnsavedChanges;
   }
   

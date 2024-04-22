@@ -9,7 +9,8 @@ let uiFileTab = (function() {
     openWorkspaceInTab,
     refreshListTab,
     openPrevTab,
-    closeOpenTab,
+    CloseOpenTab,
+    closeOpenTab: CloseOpenTab,
     openNextTab,
     SetPersistentTabByWorkspaceId,
   };
@@ -44,7 +45,7 @@ let uiFileTab = (function() {
     ui.OpenWorkspaceByIdAsync(item.id);
   }
   
-  function closeOpenTab() {
+  function CloseOpenTab() {
     let item = compoTabManager.GetActive();
     if (!item) return;
     
@@ -162,6 +163,12 @@ let uiFileTab = (function() {
   }
   
   function closeFileTab(id) {
+    
+    if (compoTempWorkspace.HasUnsavedChangesById(id)) {
+      let isConfirm = window.confirm('Unsaved changes will be lost. Continue?');
+      if (!isConfirm) return;
+    }
+    
     let newActiveTab = setActiveTabBeforeDeletionOnId(id);
     
     if (!newActiveTab) {

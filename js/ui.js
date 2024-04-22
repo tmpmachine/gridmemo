@@ -111,7 +111,7 @@ let ui = (function() {
           uiNotes.DeleteSelectedNote();
           break;
         case 'alt+p': uiDocPip.OpenWindow(); break;
-        case 'alt+w': uiFileTab.closeOpenTab(); break;
+        case 'alt+w': uiFileTab.CloseOpenTab(); break;
         case 'alt+.': uiFileTab.openNextTab(); break;
         case 'alt+,': uiFileTab.openPrevTab(); break;
         case 'alt+n': uiNotes.InsertNote(); break;
