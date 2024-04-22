@@ -8,10 +8,10 @@ let uiFileTab = (function() {
     HandleMouseDownTab,
     openWorkspaceInTab,
     refreshListTab,
-    openPrevTab,
+    OpenNextTab,
+    OpenPrevTab,
     CloseOpenTab,
     closeOpenTab: CloseOpenTab,
-    openNextTab,
     SetPersistentTabByWorkspaceId,
   };
   
@@ -38,7 +38,7 @@ let uiFileTab = (function() {
     handleClickActions(evt, data);
   }
 
-  function openPrevTab() {
+  function OpenPrevTab() {
     let item = compoTabManager.GetPrevious();
     if (!item) return;
     
@@ -52,7 +52,7 @@ let uiFileTab = (function() {
     closeFileTabAsync(item.id);
   }
   
-  function openNextTab() {
+  function OpenNextTab() {
     let item = compoTabManager.GetNext();
     if (!item) return;
     

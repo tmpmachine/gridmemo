@@ -113,8 +113,8 @@ let ui = (function() {
           break;
         case 'alt+p': uiDocPip.OpenWindow(); break;
         case 'alt+w': uiFileTab.CloseOpenTab(); break;
-        case 'alt+.': uiFileTab.openNextTab(); break;
-        case 'alt+,': uiFileTab.openPrevTab(); break;
+        case 'alt+.': uiFileTab.OpenNextTab(); break;
+        case 'alt+,': uiFileTab.OpenPrevTab(); break;
         case 'alt+n': uiNotes.InsertNote(); break;
       }
     });
