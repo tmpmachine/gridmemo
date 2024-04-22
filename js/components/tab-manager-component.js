@@ -30,7 +30,6 @@ let compoTabManager = (function() {
       {
         id: '',
         title: '',
-        isDirty: false,
       }
     */
   };
