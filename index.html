@@ -11,6 +11,7 @@
   <link rel="manifest" href="manifest.json"/>
   <meta name="theme-color" content="#202020" id="browser-nav-theme-color"/>
   <link href="css/style.css" rel="stylesheet"/>  
+  <link href="css/widgets.css" rel="stylesheet"/>  
   <link href="css/theme-ace-codetmp.css" rel="stylesheet"/>  
     
   <!-- site -->
@@ -91,7 +92,7 @@
             <div class="ov-hidden" style="height:40px;white-space:nowrap;">
               <div class="ov-auto">
                 <!-- # container tab -->
-                <div id="container-tab" class="d-inline-flex ov-auto user-select-none" data-onclick="handle-click-container-tab" data-ondblclick="handle-dblclick-tab" data-onmousedown="handle-mousedown-tab"></div>
+                <div id="container-tab" class="d-inline-flex ov-auto user-select-none _listFileTab" data-onclick="handle-click-container-tab" data-ondblclick="handle-dblclick-tab" data-onmousedown="handle-mousedown-tab"></div>
               </div>
             </div>
             
@@ -109,7 +110,7 @@
                 </div>
                 <div class="h-100 ov-auto">
                   <!-- # container notes -->
-                  <div id="wrapper" class="_notesContainer" data-onkeydown="handle-notes-keydown" style="height:100%;display:grid;grid-template-columns:repeat(4,1fr);"></div>
+                  <div id="wrapper" class="_notesContainer" data-onkeydown="handle-notes-keydown" data-onclick="handle-click-notes" style="height:100%;display:grid;grid-template-columns:repeat(4,1fr);"></div>
                 </div>
                 
               </div>
@@ -334,13 +335,13 @@
     </div>
   </template>
   <template id="tmp-list-tab">
-    <div class="item" data-kind="itemFileTab" data-view-group="itemFileTab">
+    <div class="item wg-ItemFileTab" data-kind="itemFileTab" data-view-group="itemFileTab" data-view-states="">
       <!-- ^# tmp-list-tab -->
       <div class="d-flex">
         <span class="title" data-slot="title" data-action="open"></span>
         <div class="d-flex justify-content-end" style="gap:0.3em;">
-          <button class="btn-icon icon-mate-o cursor-pointer" data-action="close" title="Close" data-view-group="itemFileTab" data-view-name-not="dirty">close</button>
-          <button class="btn-icon icon-mate-o cursor-pointer" data-action="close" title="Close" data-view-group="itemFileTab" data-view-name="dirty">fiber_manual_record</button>
+          <button class="close-btn btn-icon icon-mate-o cursor-pointer" data-action="close" title="Close" data-view-group="itemFileTab" data-view-name-not="dirty">close</button>
+          <button class="close-btn dirty btn-icon icon-mate-o cursor-pointer" data-action="close" title="Close" data-view-group="itemFileTab" data-view-name="dirty">fiber_manual_record</button>
         </div>
       </div>
     </div>

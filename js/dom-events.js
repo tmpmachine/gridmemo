@@ -17,7 +17,7 @@ let DOMEvents = (function() {
     	
     	'open-settings': () => viewStateUtil.Toggle('view-editor', ['settings', 'notes']),
     	'toggle-debug-log': () => viewStateUtil.Toggle('features-settings', ['debug-log-on', 'debug-log-off']),
-      
+      'handle-click-notes': (evt) => uiNotes.HandleClickNotes(evt),
       'insert-note': () => uiNotes.InsertNote(),
       'delete-selected-notes': () => uiNotes.DeleteSelectedNote(),
       'export-to-file': () => app.TaskExportDataToFile(),

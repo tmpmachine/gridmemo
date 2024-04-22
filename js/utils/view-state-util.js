@@ -5,9 +5,10 @@ let viewStateUtil = (function() {
   let SELF = {
     GetViewGroupNode,
     Init,
-    
     Set: SetState,
     Toggle,
+    GetViewStates,
+    HasViewState,
     Add,
     Remove,
     RemoveAll,
@@ -17,8 +18,24 @@ let viewStateUtil = (function() {
     viewStateMap: {}
   };
   
-  function Toggle(viewGroupName, viewNames) {
-    let groupEl = GetViewGroupNode(viewGroupName);
+  function HasViewState(viewGroupName, viewName, el) {
+    let viewStates = GetViewStates(viewGroupName, el);
+    
+    return viewStates.includes(viewName);
+  }
+  
+  function GetViewStates(viewGroupName, el) {
+    let groupEl = GetViewGroupNode(viewGroupName, el);
+    if (!groupEl) return [];
+    
+    let viewStates = groupEl.dataset.viewStates;
+    if (!viewStates) return [];
+    
+    return viewStates.split(' ');
+  }
+  
+  function Toggle(viewGroupName, viewNames, el) {
+    let groupEl = GetViewGroupNode(viewGroupName, el);
     let viewStates = groupEl.dataset.viewStates.split(' ');
     
     for (let viewName of viewNames) {
@@ -30,34 +47,34 @@ let viewStateUtil = (function() {
       }
     }
     
-    SetViewState(viewGroupName, viewStates);
+    SetViewState(viewGroupName, viewStates, groupEl);
   }
   
   function filterViewStates(viewStates, viewName) {
     return viewStates.filter(item => item != viewName);
   }
   
-  function Add(viewGroupName, viewNames) {
-    let groupEl = GetViewGroupNode(viewGroupName);
+  function Add(viewGroupName, viewNames, el) {
+    let groupEl = GetViewGroupNode(viewGroupName, el);
     let viewStates = groupEl.dataset.viewStates.split(' ');
-    
+
     for (let viewName of viewNames) {
       viewStates.push(viewName);
     }
     viewStates = Array.from(new Set(viewStates));
     
-    SetViewState(viewGroupName, viewStates);
+    SetViewState(viewGroupName, viewStates, groupEl);
   }
   
-  function Remove(viewGroupName, viewNames) {
-    let groupEl = GetViewGroupNode(viewGroupName);
+  function Remove(viewGroupName, viewNames, el) {
+    let groupEl = GetViewGroupNode(viewGroupName, el);
     let viewStates = groupEl.dataset.viewStates.split(' ');
     
     for (let viewName of viewNames) {
       viewStates = filterViewStates(viewStates, viewName);
     }
     
-    SetViewState(viewGroupName, viewStates);
+    SetViewState(viewGroupName, viewStates, groupEl);
   }
   
   function SetState(viewGroupName, viewNames) {
@@ -65,8 +82,8 @@ let viewStateUtil = (function() {
     Add(viewGroupName, viewNames);
   }
   
-  function RemoveAll(viewGroupName) {
-    let groupEl = GetViewGroupNode(viewGroupName);
+  function RemoveAll(viewGroupName, el) {
+    let groupEl = GetViewGroupNode(viewGroupName, el);
     let viewStates = groupEl.dataset.viewStates.split(' ');
     let groupStates = [];
     let group = data.viewStateMap.find(x => x.group == viewGroupName);
@@ -85,15 +102,22 @@ let viewStateUtil = (function() {
       viewStates = filterViewStates(viewStates, viewName);
     }
     
-    SetViewState(viewGroupName, viewStates);
+    SetViewState(viewGroupName, viewStates, groupEl);
   }
   
-  function SetViewState(viewGroupName, viewStates) {
-    let groupEl = GetViewGroupNode(viewGroupName);
+  function SetViewState(viewGroupName, viewStates, groupEl) {
+    if (!groupEl) {
+      groupEl = GetViewGroupNode(viewGroupName);
+    }
+    if (!groupEl) return;
+    
     groupEl.dataset.viewStates = viewStates.join(' ').trim();
   }
   
-  function GetViewGroupNode(groupName) {
+  function GetViewGroupNode(groupName, el) {
+    if (el) {
+      return el;
+    }
     return $(`[data-view-group~="${groupName}"][data-view-states]`);
   }
   

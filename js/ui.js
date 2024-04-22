@@ -11,8 +11,18 @@ let ui = (function() {
     HandleNotesKeydown,
   };
   
-  let noteInputDebounce = debounce(130, () => {
+  let noteInputDebounce = debounce(110, async () => {
     
+    let currentWorkspaceId = compoWorkspace.GetActiveId();
+    let gridNotesObj = uiNotes.GetAllGridContent();
+    await compoTempWorkspace.StoreTempAsync(currentWorkspaceId, gridNotesObj);
+    
+    let checkResult = compoTempWorkspace.CheckUnsavedChangesById(currentWorkspaceId);
+    if (checkResult.hasUnsavedChanges) {
+      uiFileTab.SetDirtyById(currentWorkspaceId, true);
+    } else {
+      uiFileTab.SetDirtyById(currentWorkspaceId, false);
+    }
   });
   
   function HandleNotesKeydown(evt) {

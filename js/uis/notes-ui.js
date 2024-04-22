@@ -9,6 +9,7 @@ let uiNotes = (function() {
     GetActiveNoteId,
     InsertNote,
     GetAllGridContent,
+    HandleClickNotes,
   };
   
   function GetAllGridContent() {
@@ -22,6 +23,15 @@ let uiNotes = (function() {
     return values;
   }
   
+  function HandleClickNotes(evt) {
+    let targetEl = evt.target;
+    let itemEl = targetEl?.closest('[data-kind="item"]');
+    
+    if (!itemEl) return;
+    
+    toggleRGB(itemEl);
+  }
+  
   async function ListNotesAsync(noteObjs = []) {
     $('#wrapper')?.replaceChildren('');
     for (let obj of noteObjs) {
@@ -29,12 +39,11 @@ let uiNotes = (function() {
     }
   }
   
-  function toggleRGB(e) {
+  function toggleRGB(nodeEl) {
     for (let node of $$('#wrapper textarea')) {
       node.parentNode.classList.toggle('active', false);
     }
-    let node = e.target;
-    node.parentNode.classList.toggle('active', true);
+    nodeEl.querySelector('.notes-inner')?.classList.toggle('active', true);
   }
   
   async function InsertNote() {
@@ -77,7 +86,6 @@ let uiNotes = (function() {
     });
     
     el.querySelector('[data-kind="item"]').dataset.id = data.id;
-    el.querySelector('textarea').addEventListener('click', toggleRGB);
     el.querySelector('textarea').value = data.content;
     
     docFrag.append(el);
@@ -113,7 +121,6 @@ let uiNotes = (function() {
     let el = document.querySelector('#tmp-list-note').content.cloneNode(true);
     
     el.querySelector('[data-kind="item"]').dataset.id = data.id;
-    el.querySelector('textarea').addEventListener('click', toggleRGB);
     el.querySelector('textarea').value = data.content;
     el.querySelector('textarea').tempData = {
       editorSesionCustomFoldData: data.editorSession?.foldData,

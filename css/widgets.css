@@ -1,0 +1,10 @@
+.wg-ItemFileTab {
+  .close-btn {
+    & {
+      color: #ffffff96; 
+    }
+    &.dirty {
+      color: #FF9800;
+    }
+  }
+}

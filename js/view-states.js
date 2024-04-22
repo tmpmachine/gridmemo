@@ -16,7 +16,7 @@ let viewStates = (function() {
     },
     // file tab item
     {
-      group: 'fileTabItem',
+      group: 'itemFileTab',
       states: ['dirty'],
       inverseStates: ['dirty']
     },

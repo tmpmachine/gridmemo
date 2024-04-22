@@ -11,6 +11,7 @@
   <link rel="manifest" href="manifest.json"/>
   <meta name="theme-color" content="#202020" id="browser-nav-theme-color"/>
   <link href="css/style.css" rel="stylesheet"/>  
+  <link href="css/widgets.css" rel="stylesheet"/>  
   <link href="css/theme-ace-codetmp.css" rel="stylesheet"/>  
     
   <!-- site -->
@@ -91,7 +92,7 @@
             [ .ov-hidden {h:40px;} {ws:nowrap}
               [ .ov-auto
                 <!-- # container tab -->
-                [ #container-tab .d-inline-flex data-onclick="handle-click-container-tab" .ov-auto .user-select-none data-ondblclick="handle-dblclick-tab" data-onmousedown="handle-mousedown-tab"]
+                [ #container-tab .d-inline-flex data-onclick="handle-click-container-tab" .ov-auto .user-select-none data-ondblclick="handle-dblclick-tab" data-onmousedown="handle-mousedown-tab" ._listFileTab]
               ]
             ]
             
@@ -109,7 +110,7 @@
                 ]
                 [ .h-100 .ov-auto
                   <!-- # container notes -->
-                  [ #wrapper ._notesContainer {height:100%;display:grid;grid-template-columns:repeat(4,1fr)} data-onkeydown="handle-notes-keydown"]
+                  [ #wrapper ._notesContainer {height:100%;display:grid;grid-template-columns:repeat(4,1fr)} data-onkeydown="handle-notes-keydown" data-onclick="handle-click-notes"]
                 ]
                 
               ]
@@ -334,13 +335,13 @@
     ]
   </template>
   <template id="tmp-list-tab">
-    [ .item data-kind="itemFileTab" data-view-group="itemFileTab"
+    [ .item data-kind="itemFileTab" data-view-group="itemFileTab" data-view-states="" .wg-ItemFileTab
       <!-- ^# tmp-list-tab -->
       [ .d-flex
         [s data-slot="title" data-action="open" .title]
         [ .d-flex .justify-content-end {gap:0.3em}
-          [btn .btn-icon .icon-mate-o 'close' data-action="close" title="Close" .cursor-pointer data-view-group="itemFileTab" data-view-name-not="dirty"]
-          [btn .btn-icon .icon-mate-o 'fiber_manual_record' data-action="close" title="Close" .cursor-pointer data-view-group="itemFileTab" data-view-name="dirty"]
+          [btn .close-btn .btn-icon .icon-mate-o 'close' data-action="close" title="Close" .cursor-pointer data-view-group="itemFileTab" data-view-name-not="dirty"]
+          [btn .close-btn .dirty .btn-icon .icon-mate-o 'fiber_manual_record' data-action="close" title="Close" .cursor-pointer data-view-group="itemFileTab" data-view-name="dirty"]
         ]
       ]
     ]

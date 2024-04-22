@@ -9,6 +9,7 @@ let compoTempWorkspace = (function() {
     CaptureNotesAsync,
     HasUnsavedChanges,
     HasUnsavedChangesById,
+    CheckUnsavedChangesById,
     RecaptureCurrentWorkspaceAsync,
   };
   
@@ -80,8 +81,8 @@ let compoTempWorkspace = (function() {
     if (itemIndex < 0) return;
     
     let item = data.items[itemIndex];
-    let result = checkUnsavedChanges(gridNotesObj, item.captures);
-    if (!result.hasUnsavedChanges) return;
+    // let result = checkUnsavedChanges(gridNotesObj, item.captures);
+    // if (!result.hasUnsavedChanges) return;
     
     item.notes = gridNotesObj;
     app.ListenAppUnload();
@@ -97,6 +98,14 @@ let compoTempWorkspace = (function() {
     let items = GetAllItems();
     let hasUnsavedChanges = items.some(item => item.notes && item.id == id);
     return hasUnsavedChanges;
+  }
+  
+  function CheckUnsavedChangesById(id) {
+    let item = GetItemById(id);
+    if (!item) return null;
+    
+    let checkResult = checkUnsavedChanges(item.notes, item.captures);
+    return checkResult;
   }
   
   function checkUnsavedChanges(newData, oldData) {
