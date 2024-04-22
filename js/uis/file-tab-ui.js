@@ -167,6 +167,8 @@ let uiFileTab = (function() {
     if (compoTempWorkspace.HasUnsavedChangesById(id)) {
       let isConfirm = window.confirm('Unsaved changes will be lost. Continue?');
       if (!isConfirm) return;
+      
+      compoTempWorkspace.DeleteById(id);
     }
     
     let newActiveTab = setActiveTabBeforeDeletionOnId(id);
