@@ -93,7 +93,6 @@ let compoTempWorkspace = (function() {
     // if (!result.hasUnsavedChanges) return;
     
     item.notes = gridNotesObj;
-    app.ListenAppUnload();
   }
   
   function HasUnsavedChanges() {

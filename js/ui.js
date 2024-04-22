@@ -26,7 +26,9 @@ let ui = (function() {
     }
     
     // check if there's no unsaved changes
-    if (!compoTempWorkspace.HasUnsavedChanges()) {
+    if (compoTempWorkspace.HasUnsavedChanges()) {
+      app.ListenAppUnload();
+    } else {
       app.UnlistenAppUnload();
     }
   });
@@ -72,6 +74,15 @@ let ui = (function() {
     let itemTab = compoTabManager.GetById(id);
     
     await compoTempWorkspace.StoreTempAsync(currentWorkspaceId, gridNotesObj);
+    
+    // remove temp notes if content is the same
+    let checkResult = compoTempWorkspace.CheckUnsavedChangesById(currentWorkspaceId);
+    if (checkResult.hasUnsavedChanges) {
+      app.ListenAppUnload();
+    } else {
+      compoTempWorkspace.DeleteTempNotesById(currentWorkspaceId);
+      app.UnlistenAppUnload();
+    }
     
     if (!itemTab) {
       let workspace = compoWorkspace.GetById(id);
