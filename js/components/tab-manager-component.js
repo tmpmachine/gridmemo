@@ -18,7 +18,9 @@ let compoTabManager = (function() {
     CountAll,
     DeleteById,
     ReplaceTemp,
+    SetDirtyById,
     HasTemp,
+    IsDirty,
   };
   
   let data = {
@@ -28,13 +30,30 @@ let compoTabManager = (function() {
       {
         id: '',
         title: '',
+        isDirty: false,
       }
     */
   };
   
   let local = {
     componentStorageKey: 'compoTabManager',
+    dirtyIds: [],
   };
+  
+  function IsDirty(id) {
+    return local.dirtyIds.includes(id);
+  }
+  
+  function SetDirtyById(id, isDirty = false) {
+    let item = GetById(id);
+    if (item == null) return false;
+    
+    if (isDirty) {
+      local.dirtyIds.push(id);
+    } else {
+      local.dirtyIds = local.dirtyIds.filter(_id => _id != id);
+    }
+  }  
   
   function Init(noReferenceData) {
     initData(noReferenceData);

@@ -20,6 +20,8 @@ let uiFileTab = (function() {
     let itemEl = $(`._listFileTab [data-kind="itemFileTab"][data-id="${id}"]`);
     if (!itemEl) return;
     
+    compoTabManager.SetDirtyById(id, isDirty);
+    
     if (isDirty) {
       viewStateUtil.Add('fileTabItem', ['dirty'], itemEl);
     } else {
@@ -135,7 +137,7 @@ let uiFileTab = (function() {
     let items = compoTabManager.GetAll();
     let activeId = compoTabManager.GetActiveId();
     
-    $('#container-tab').innerHTML = '';
+    $('._listFileTab').innerHTML = '';
     let docFrag = document.createDocumentFragment();
     
     for (let item of items) {
@@ -150,11 +152,14 @@ let uiFileTab = (function() {
       itemEl.dataset.id = item.id;
       itemEl.classList.toggle('is-active', (item.id == activeId));
       itemEl.classList.toggle('is-temp', (item.isTemp === true));
+      if (compoTabManager.IsDirty(item.id)) {
+        viewStateUtil.Add('fileTabItem', ['dirty'], itemEl);
+      }
       
       docFrag.append(el);
     }
     
-    $('#container-tab').append(docFrag);
+    $('._listFileTab').append(docFrag);
   }
   
   function setActiveTabBeforeDeletionOnId(id) {
