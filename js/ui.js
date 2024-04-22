@@ -21,7 +21,13 @@ let ui = (function() {
     if (checkResult.hasUnsavedChanges) {
       uiFileTab.SetDirtyById(currentWorkspaceId, true);
     } else {
+      compoTempWorkspace.DeleteTempNotesById(currentWorkspaceId);
       uiFileTab.SetDirtyById(currentWorkspaceId, false);
+    }
+    
+    // check if there's no unsaved changes
+    if (!compoTempWorkspace.HasUnsavedChanges()) {
+      app.UnlistenAppUnload();
     }
   });
   

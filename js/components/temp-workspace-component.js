@@ -3,6 +3,7 @@ let compoTempWorkspace = (function() {
   let SELF = {
     StoreTempAsync,
     DeleteById,
+    DeleteTempNotesById,
     GetAllItems,
     GetNotesByWorkspaceId,
     UpdateNoteContentById,
@@ -48,6 +49,13 @@ let compoTempWorkspace = (function() {
     
     let item = data.items.splice(delIndex, 1);
     return item;
+  }
+  
+  function DeleteTempNotesById(id) {
+    let item = GetItemById(id);
+    if (!item) return;
+    
+    delete item.notes;
   }
   
   function GetNotesByWorkspaceId(id) {
