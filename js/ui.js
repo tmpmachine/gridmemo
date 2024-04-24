@@ -77,7 +77,7 @@ let ui = (function() {
     
     // remove temp notes if content is the same
     let checkResult = compoTempWorkspace.CheckUnsavedChangesById(currentWorkspaceId);
-    if (checkResult.hasUnsavedChanges) {
+    if (checkResult?.hasUnsavedChanges) {
       app.ListenAppUnload();
     } else {
       compoTempWorkspace.DeleteTempNotesById(currentWorkspaceId);
