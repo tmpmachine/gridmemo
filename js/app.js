@@ -65,7 +65,7 @@ let app = (function() {
   async function TaskClearData() {
     return new Promise(async resolve => {
       
-	    if (!window.confirm('Are you sure?')) {
+	    if (await !windog.confirm('Are you sure?')) {
 	      resolve(false);
 	      return;
 	    }

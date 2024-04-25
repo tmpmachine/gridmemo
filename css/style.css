@@ -353,6 +353,8 @@ body,textarea{
   color: #ffffff;
 }
 
-
+.gap-half{gap:0.5rem}.gap-full{gap:1rem}
+.void{display:flex}
+.void-tenth{padding-bottom:0.1rem}.void-quarter{padding-bottom:0.25rem}.void-half{padding-bottom:0.5rem}.void-full,.void-1x{padding-bottom:1rem}.void-2x{padding-bottom:2rem}
 
 .obsoletes{display:none!important;height:0!important;width:0!important;overflow:hidden!important;visibility:hidden!important;position:absolute!important}

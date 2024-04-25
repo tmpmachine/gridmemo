@@ -358,6 +358,64 @@
       </div>
     </div>
   </template>
+
+  <template id="tmp-dialog-alert">
+    <dialog class="wg-Windog">
+      <!-- ^# tmp-dialog-alert -->
+      <div class="backdrop"></div>
+      <div class="wrapper">
+        
+        <form method="dialog" data-ref="form">
+          <div data-kind="message"></div>
+          <div class="void void-full"></div>
+          <div class="text-center">
+            <button>Ok</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+  </template>
+  <template id="tmp-dialog-prompt">
+    <dialog class="wg-Windog">
+      <!-- ^# tmp-dialog-alert -->
+      <div class="backdrop"></div>
+      <div class="wrapper">
+        
+        <form method="dialog" data-ref="form">
+          <div data-kind="message"></div>
+          <div class="void void-half"></div>
+          
+          <input class="input-style-default" type="text" data-kind="input"/>
+          <div class="void void-full"></div>
+          
+          <div class="d-flex justify-content-end gap-full">
+            <button value="ok">Ok</button>
+            <button>Cancel</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+  </template>
+  <template id="tmp-dialog-confirm">
+    <dialog class="wg-Windog">
+      <!-- ^# tmp-dialog-confirm -->
+      <div class="backdrop"></div>
+      <div class="wrapper">
+      
+        <form method="dialog" data-ref="form">
+          <div data-kind="message"></div>
+          <div class="void void-full"></div>
+          <div class="d-flex justify-content-end gap-full">
+            <button value="ok">OK</button>
+            <button>Cancel</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+  </template>
+
+  <!--  -->
+  <!-- # templates -->
   
   
   

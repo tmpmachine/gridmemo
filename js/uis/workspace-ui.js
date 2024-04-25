@@ -65,9 +65,9 @@ let uiWorkspace = (function() {
     await uiNotes.ListNotesAsync(noteObjs);
   }
   
-  function renameWorkspaceById(id) {
+  async function renameWorkspaceById(id) {
     let workspace = compoWorkspace.GetById(id);
-    let userVal = window.prompt('Workspace name', workspace.title);
+    let userVal = await windog.prompt('Workspace name', workspace.title);
     if (!userVal) return;
     
     workspace.title = userVal;
@@ -82,7 +82,7 @@ let uiWorkspace = (function() {
   }
   
   async function deleteWorkspaceById(id) {
-    let isConfirm = window.confirm('Are you sure?');
+    let isConfirm = await windog.confirm('Are you sure?');
     if (!isConfirm) return;
     
     compoTempWorkspace.DeleteById(id);
@@ -107,8 +107,8 @@ let uiWorkspace = (function() {
     }
   }
   
-  function CreateWorkspace() {
-    let userVal = window.prompt('New workspace name');
+  async function CreateWorkspace() {
+    let userVal = await windog.prompt('New workspace name');
     if (!userVal) return;
     
     let workspace = compoWorkspace.AddGroup(userVal);
