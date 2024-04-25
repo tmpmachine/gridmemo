@@ -20,7 +20,7 @@ let compoGsi = (function() {
   };
   
   let local = {
-    client_id: '254780146992-b7aoj8pumrnbcqfpqtokevrmshethu0n.apps.googleusercontent.com',
+    client_id: '',
     scopes: [
       'https://www.googleapis.com/auth/drive.file', 
       'https://www.googleapis.com/auth/drive.appdata',
@@ -43,11 +43,11 @@ let compoGsi = (function() {
   }
   
   function reloadAuthState() {
-    if (data.access_token === '') {
-      viewStateUtil.Remove('features-cloud', ['authorized']);
-    } else {
+    if (data.access_token?.trim().length > 0) {
       viewStateUtil.Add('features-cloud', ['authorized']);
+      return;
     }
+    viewStateUtil.Remove('features-cloud', ['authorized']);
   }
   
   function ClearToken() {
