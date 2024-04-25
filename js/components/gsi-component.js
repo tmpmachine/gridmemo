@@ -31,8 +31,8 @@ let compoGsi = (function() {
     tempData: null,
   };
   
-   function Logout() {
-    let isConfirm = window.confirm('This will only sign out your account. See Application Data section to clear application data. Continue?');
+   async function Logout() {
+    let isConfirm = await windog.confirm('This will only sign out your account. See Application Data section to clear application data. Continue?');
     if (!isConfirm) return;
     
     data.userEmail = '';
