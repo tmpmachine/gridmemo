@@ -8,7 +8,7 @@ let DOMEvents = (function() {
     	'backup-to-cloud': () => app.BackupToCloud(),
     	'restore-from-cloud': () => app.RestoreFromCloud(),
     	'save-workspace': () => app.save(),
-    	
+    	'open-in-pip': () => uiDocPip.OpenWindow(),
     	'toggle-sidebar': () => viewStateUtil.Toggle('workspace', ['sidebar']),
     	
     	'workspace-create': () => uiWorkspace.CreateWorkspace(),
