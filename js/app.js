@@ -31,10 +31,12 @@ let app = (function() {
     for (let el of document.querySelectorAll('.notes')) {
       let id = el.dataset.id;
       let text = el.querySelector('.text');
+      let titleEl = el.querySelector('[data-slot="title"]');
       let data = {
         id,
         windowWidth: text.dataset.windowWidth ? text.dataset.windowWidth : null, 
         windowHeight: text.dataset.windowHeight ? text.dataset.windowHeight : null, 
+        title: titleEl?.textContent ?? '',
         content: text.value,
         editorSession: {
           foldData: el.querySelector('textarea')?.tempData?.editorSesionCustomFoldData,

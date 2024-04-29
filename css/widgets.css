@@ -9,6 +9,43 @@
   }
 }
 
+/* # notes */
+.wg-Notes {
+  & {
+    min-height: 250px;
+  	  border: 1px solid #252d2f;
+      position: relative;
+      display:grid;
+      grid-template-rows: 1fr auto;
+      overflow: hidden;
+  }
+  .title {
+    padding: 0.1em;
+    background: #3c3876;
+    font-size: 0.9em;
+  }
+  .title._isShown {
+    padding: 0.3em 0.5em;
+    /* border-bottom: 1px solid #03a9f4; */
+    background: #3c3876;
+  }
+  .notes-inner{
+    display:grid;
+    grid-template-rows: auto 1fr;
+  }
+  .btn-icon {
+    padding: 0.1em;
+    font-size: 1.1rem;
+  }
+  .btn-icon:not(:hover) {
+    opacity: 0.3;
+  }
+  .notes-inner:not(.active) textarea {
+    overflow: hidden;
+  }
+  
+}
+
 .wg-Windog {
   &::backdrop {
     background: rgba(0, 0, 0, 0.4);
