@@ -93,8 +93,10 @@ let uiNotes = (function() {
 
     if (hex) {
       titleEl.style.background = hex;
+      titleEl.dataset.color = hex;
     } else {
       titleEl.removeAttribute('style');
+      delete titleEl.dataset.color;
     }
   }
   
@@ -216,6 +218,7 @@ let uiNotes = (function() {
     }
     if (titleEl && data.color) {
       titleEl.style.background = data.color;
+      titleEl.dataset.color = data.color;
     }
     titleEl?.replaceChildren(data.title ?? '');
     el.querySelector('[data-kind="item"]').dataset.id = data.id;

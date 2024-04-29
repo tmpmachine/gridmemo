@@ -36,6 +36,7 @@ let app = (function() {
         id,
         windowWidth: text.dataset.windowWidth ? text.dataset.windowWidth : null, 
         windowHeight: text.dataset.windowHeight ? text.dataset.windowHeight : null, 
+        color: titleEl?.dataset.color,
         title: titleEl?.textContent ?? '',
         content: text.value,
         editorSession: {
