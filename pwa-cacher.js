@@ -137,6 +137,7 @@ let pwaCacher = (function() {
       let isConfirm = await clientUpdateHandler('Update Available<br><small>This update includes possible breaking changes! Please back up your data if there\'s an option to do so. Update the app now?</small>', 'Update');
       if (!isConfirm) return;
     } else if (changeState === 4) {
+      windog.alert('No updates available');
       return;
     }
     
@@ -193,7 +194,7 @@ let pwaCacher = (function() {
   
   function noticeUpToDate() {
     try {
-      $('#txt-pwa-cacher-update-status').textContent = 'App is up to date!';
+      $('#txt-pwa-cacher-update-status').textContent = 'No updates available.';
     } catch (e) {
       console.error(e);
     }
