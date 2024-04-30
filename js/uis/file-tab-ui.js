@@ -181,7 +181,7 @@ let uiFileTab = (function() {
   async function closeFileTabAsync(id) {
     
     if (compoTempWorkspace.HasUnsavedChangesById(id)) {
-      let isConfirm = window.confirm('Unsaved changes will be lost. Continue?');
+      let isConfirm = await windog.confirm('Unsaved changes will be lost. Continue?');
       if (!isConfirm) return;
       
       compoTempWorkspace.DeleteById(id);

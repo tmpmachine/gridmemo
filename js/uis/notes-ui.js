@@ -140,7 +140,7 @@ let uiNotes = (function() {
     let noteObj = await compoNotes.GetByIdAsync(id);
     
     if (noteObj?.data?.content?.trim().length > 0) {
-      let isConfirm = window.confirm('Delete this note? This process cannot be undone');
+      let isConfirm = await windog.confirm('Delete this note? This process cannot be undone');
       if (!isConfirm) return;
     }
     

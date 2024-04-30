@@ -82,9 +82,9 @@ let pwaCacher = (function() {
     return urls;
   }
   
-  function RemoveUpdate() {
+  async function RemoveUpdate() {
     
-    let isConfirm = window.confirm('Are you sure?');
+    let isConfirm = await windog.confirm('Are you sure?');
     if (!isConfirm) return;
     
     caches.delete(cacheName)
