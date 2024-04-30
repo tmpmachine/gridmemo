@@ -4,54 +4,40 @@ Grid layout note-taking app for the web.
 Web app: https://gridmemo.web.app/
 
 ## Development
-Written in plain JavaScript. Scripts are loaded by appending `<script>` tags in batches in **index.js**.
+Run index.html on localhost or open directly in browser.
+```
+npm i
+npm run setup           # copy node_modules scripts
+npm run watch-divless   # if you're editing .divless/* files
+```
 
+- See **index.js** for app entry point.
 - Caching files for offline support: see **manifest-cache.js**.
-- Authorization Scopes (backup to Google Drive): see **js/components/gsi-component.js** and update `local.client_id` to your Google project client ID, and update `local.scopes` to your requirements.
-
-### Project Structure
-Main files and directories that you'd likely spend more time on :
-```
-/js
-    /components
-        workspace-component.js
-        ...
-    /uis
-        workspace-ui.js
-        ...
-
-    app.js
-    app-data.js
-
-    dom-events.js
-    ui.js
-    view-states.js
-
-index.html
-index.js
-manifest-cache.json
-```
-Unless tied to a component, I'd put UI script in **ui.js**.
+- Google Drive synchronization: see **js/components/gsi-component.js** and update `local.client_id` to your Google project client ID, and update `local.scopes` to your requirements.
 
 ### Divless HTML
-I write HTML in [divless HTML format](https://github.com/tmpmachine/divless-html). Every HTML file has a copy in `.divless` folder in the same directory.
+I write HTML in [divless HTML format](https://github.com/tmpmachine/divless-html). Every HTML file may have a copy in `.divless` folder in the same directory.
 
-You'll need [vsce-divless](https://marketplace.visualstudio.com/items?itemName=PacoLemon.divlesshtml) (**VS Code extension**) to auto-convert the divless formatted HTML file, but you can edit the original file just fine.
 ```
 /.divless
     index.html
 index.html          -> Original file
 ```
-In summary, divless HTML uses:
-- square brackets (`[]`) for tags, 
-- nameless tag for `<div>`, 
-- hashtag (`#`) for ID, 
-- dot (`.`) for classes, 
-- and curly braces (`{}`) for inline style.
+
+**You should only edit the `.divless/*` files (if exists) to keep it in sync.**
+
+Run `npm run watch-divless` to auto-convert the **.divless/*** files upon saving.
+
+### Divless HTML in Summary
+- Square brackets (`[]`) for tags.
+- `[ ]` is a `<div>`.
+- Hashtag (`#`) for ID. 
+- Dot (`.`) for classes.
+- Curly braces (`{}`) for inline style.
 
 Example:
 ```
-<!-- A div tag with two span tags-->
+<!-- A div tag with two span tags -->
 [ #label-info .text-center {padding:1rem}
     <span> Regular span tag </span>
     [span 'A span tag in divless HTML format']
