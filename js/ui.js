@@ -8,6 +8,7 @@ let ui = (function() {
     ToggleInsertSnippet,
     OpenPipCanvasModule,
     OpenWorkspaceByIdAsync,
+    HandleNotesKeydown,
   };
   
   let noteInputDebounce = debounce(110, async () => {

@@ -51,6 +51,7 @@
   ],
   "root": [
     "css/style.css",
+    "css/widgets.css",
     "css/theme-ace-codetmp.css",
     
     "./",

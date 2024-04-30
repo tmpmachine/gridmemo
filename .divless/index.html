@@ -11,6 +11,7 @@
   <link rel="manifest" href="manifest.json"/>
   <meta name="theme-color" content="#202020" id="browser-nav-theme-color"/>
   <link href="css/style.css" rel="stylesheet"/>  
+  <link href="css/widgets.css" rel="stylesheet"/>  
   <link href="css/theme-ace-codetmp.css" rel="stylesheet"/>  
     
   <!-- site -->
@@ -91,11 +92,10 @@
             [ .ov-hidden {h:40px;} {ws:nowrap}
               [ .ov-auto
                 <!-- # container tab -->
-                [ #container-tab .d-inline-flex data-onclick="handle-click-container-tab" .ov-auto .user-select-none data-ondblclick="handle-dblclick-tab" data-onmousedown="handle-mousedown-tab"]
+                [ #container-tab .d-inline-flex data-onclick="handle-click-container-tab" .ov-auto .user-select-none data-ondblclick="handle-dblclick-tab" data-onmousedown="handle-mousedown-tab" ._listFileTab]
               ]
             ]
             
-            <!-- # container notes -->
             [ .d-grid .ov-hidden .h-100 
               
               <div class="h-100 ov-hidden" data-view-group="workspace" data-view-name="has-workspace">
@@ -109,7 +109,8 @@
                   ]
                 ]
                 [ .h-100 .ov-auto
-                  [ #wrapper ._notesContainer {height:100%;display:grid;grid-template-columns:repeat(4,1fr)}]
+                  <!-- # container notes -->
+                  [ #wrapper ._notesContainer {height:100%;display:grid;grid-template-columns:repeat(4,1fr)} data-onkeydown="handle-notes-keydown" data-onclick="handle-click-notes"]
                 ]
                 
               ]
@@ -323,8 +324,8 @@
   </template>
   
   <template id="tmp-list-workspace">
-    <!-- # tmp-list-workspace -->
     [ .item data-kind="itemWorkspace" .d-grid {p:0.3em 0.5em} {gap:0.5rem}
+      <!-- ^# tmp-list-workspace -->
       [s data-slot="title"]
       [ .d-flex .justify-content-end {gap:0.3em}
         [btn .btn-icon .icon-mate-o 'chevron_right' data-action="open" title="open" .obsoletes]
@@ -334,18 +335,20 @@
     ]
   </template>
   <template id="tmp-list-tab">
-    <!-- # list tab -->
-    [ .item data-kind="itemFileTab" 
+    [ .item data-kind="itemFileTab" data-view-group="itemFileTab" data-view-states="" .wg-ItemFileTab
+      <!-- ^# tmp-list-tab -->
       [ .d-flex
         [s data-slot="title" data-action="open" .title]
         [ .d-flex .justify-content-end {gap:0.3em}
-          [btn .btn-icon .icon-mate-o 'close' data-action="close" title="Close" .cursor-pointer]
+          [btn .close-btn .btn-icon .icon-mate-o 'close' data-action="close" title="Close" .cursor-pointer data-view-group="itemFileTab" data-view-name-not="dirty"]
+          [btn .close-btn .dirty .btn-icon .icon-mate-o 'fiber_manual_record' data-action="close" title="Close" .cursor-pointer data-view-group="itemFileTab" data-view-name="dirty"]
         ]
       ]
     ]
   </template>
   <template id="tmp-list-note">
     [ .notes data-kind="item"
+      <!-- ^# tmp-list-note -->
       [ .notes-inner
         [t .text spellcheck="false" .mousetrap]
         [ .handle .pos-absolute {b:0;r:0;}

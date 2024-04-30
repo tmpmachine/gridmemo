@@ -15,7 +15,19 @@ let uiFileTab = (function() {
     openPrevTab: OpenPrevTab,
     openNextTab: OpenNextTab,
     SetPersistentTabByWorkspaceId,
+    SetDirtyById,
   };
+  
+  function SetDirtyById(id, isDirty = false) {
+    let itemEl = $(`._listFileTab [data-kind="itemFileTab"][data-id="${id}"]`);
+    if (!itemEl) return;
+    
+    if (isDirty) {
+      viewStateUtil.Add('fileTabItem', ['dirty'], itemEl);
+    } else {
+      viewStateUtil.Remove('fileTabItem', ['dirty'], itemEl);
+    }
+  }
   
   function handleClickActions(evt, data) {
     switch (evt.button) {
