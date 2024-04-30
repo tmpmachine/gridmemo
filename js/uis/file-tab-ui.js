@@ -165,13 +165,15 @@ let uiFileTab = (function() {
     let item = null;
     let lastItemIndex = compoTabManager.CountAll() - 1;
     let itemIndex = compoTabManager.GetIndexById(id);
-    
-    if (itemIndex == lastItemIndex) {
-      item = compoTabManager.GetPrevious();
-    } else {
-      item = compoTabManager.GetNext();
+
+    if (id == compoTabManager.GetActiveId()) {
+      if (itemIndex == lastItemIndex) {
+        item = compoTabManager.GetPrevious();
+      } else {
+        item = compoTabManager.GetNext();
+      }
+      compoTabManager.SetActiveById(item.id);
     }
-    compoTabManager.SetActiveById(item.id);
     
     return item;
   }
