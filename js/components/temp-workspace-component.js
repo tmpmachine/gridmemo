@@ -3,14 +3,31 @@ let compoTempWorkspace = (function() {
   let SELF = {
     StoreTempAsync,
     DeleteById,
-    StashAsync,
+    DeleteTempNotesById,
+    GetAllItems,
     GetNotesByWorkspaceId,
     UpdateNoteContentById,
+    CaptureNotesAsync,
+    HasUnsavedChanges,
+    HasUnsavedChangesById,
+    RecaptureCurrentWorkspaceAsync,
   };
   
   let data = {
     items: [],
   };
+  
+  async function RecaptureCurrentWorkspaceAsync() {
+    let currentWorkspaceId = compoWorkspace.GetActiveId();
+    
+    DeleteById(currentWorkspaceId);
+    await CaptureNotesAsync(currentWorkspaceId);
+    
+    // check if there's no unsaved changes
+    if (!HasUnsavedChanges()) {
+      app.UnlistenAppUnload();
+    }
+  }
   
   function UpdateNoteContentById(workspaceId, noteId, content) {
     let item = GetItemById(workspaceId);
@@ -20,12 +37,24 @@ let compoTempWorkspace = (function() {
       note.content = content;
     }
   }
+
+  function countItems() {
+    return data.items.length;
+  }
   
   function DeleteById(id) {
     let delIndex = GetItemIndexById(id);
     if (delIndex < 0) return null;
     
-    return data.items.splice(delIndex, 1);
+    let item = data.items.splice(delIndex, 1);
+    return item;
+  }
+  
+  function DeleteTempNotesById(id) {
+    let item = GetItemById(id);
+    if (!item) return;
+    
+    delete item.notes;
   }
   
   function GetNotesByWorkspaceId(id) {
@@ -33,23 +62,69 @@ let compoTempWorkspace = (function() {
     return item?.notes;
   }
   
+  async function CaptureNotesAsync(workspaceId, gridNotesObj) {
+    let itemIndex = GetItemIndexById(workspaceId);
+    if (itemIndex >= 0) return;
+
+    if (!gridNotesObj) {
+      gridNotesObj = await compoWorkspace.GetNotesByWorkspaceIdAsync(workspaceId);
+    }
+    if (!gridNotesObj) return;
+    
+    data.items.push({
+      captures: gridNotesObj.map(obj => {
+        let {id, content} = obj;
+        return {
+          id,
+          content,
+        };
+      }),
+      id: workspaceId,
+    });
+  }
+  
   function StoreTempAsync(workspaceId, gridNotesObj) {
     let itemIndex = GetItemIndexById(workspaceId);
+    if (itemIndex < 0) return;
     
-    if (itemIndex < 0) {
-      data.items.push({
-        notes: gridNotesObj.map(obj => {
-          let {id, content} = obj;
-          return {
-            id,
-            content,
-          };
-        }),
-        id: workspaceId,
-      });
-    } else {
-      data.items[itemIndex].notes = gridNotesObj;
+    let item = data.items[itemIndex];
+    let result = checkUnsavedChanges(gridNotesObj, item.captures);
+    if (!result.hasUnsavedChanges) return;
+    
+    item.notes = gridNotesObj;
+  }
+  
+  function HasUnsavedChanges() {
+    let items = GetAllItems();
+    let hasUnsavedChanges = items.some(item => item.notes);
+    return hasUnsavedChanges;
+  }
+  
+  function HasUnsavedChangesById(id) {
+    let items = GetAllItems();
+    let hasUnsavedChanges = items.some(item => item.notes && item.id == id);
+    return hasUnsavedChanges;
+  }
+  
+  function checkUnsavedChanges(newData, oldData) {
+    let hasUnsavedChanges = false;
+    
+    for  (let item of newData) {
+      let matchedData = oldData.find(x => x.id == item.id);
+      if (!matchedData) {
+        hasUnsavedChanges = true;
+        break;
+      }
+      
+      if (matchedData.content !== item.content) {
+        hasUnsavedChanges = true;
+        break;
+      }
     }
+    
+    return {
+      hasUnsavedChanges,
+    };
   }
   
   function GetItemById(id) {
@@ -66,29 +141,6 @@ let compoTempWorkspace = (function() {
   function GetItemIndexById(id) {
     let items = GetAllItems();
     return items.findIndex(item => item.id == id);
-  }
-  
-  async function StashAsync(workspaceObj) {
-    // draft
-    
-    /*let {id: workspaceId} = workspaceObj;
-    let notes = await compoWorkspace.GetNotesByWorkspaceIdAsync(workspaceId);
-    let itemIndex = GetItemIndexById(workspaceId);
-    
-    if (itemIndex < 0) {
-      data.items.push({
-        notes: notes.map(obj => {
-          let {id, content} = obj;
-          return {
-            id,
-            content,
-          };
-        }),
-        id: workspaceId,
-      });
-    } else {
-      data.items[itemIndex].notes = notes;
-    }*/
   }
   
   return SELF;

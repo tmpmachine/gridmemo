@@ -4,7 +4,8 @@ let app = (function() {
   
   let SELF = {
     Init,
-    save,
+    SaveAsync,
+    save: SaveAsync,
     BackupToCloud,
     RestoreFromCloud,
     GetDataManager,
@@ -14,6 +15,8 @@ let app = (function() {
     TaskImportDataFromFile,
     TaskImportDataFromJSON,
     Log,
+    ListenAppUnload,
+    UnlistenAppUnload,
   };
   
   // db config
@@ -21,7 +24,7 @@ let app = (function() {
   const DB_NAME = 'app-MjU1MTUyNjA-db';
   const DB_VERSION = 1;
   
-  async function save() {
+  async function SaveAsync() {
     
     uiDocPip.SetPipEditorData();
     
@@ -37,11 +40,11 @@ let app = (function() {
           foldData: el.querySelector('textarea')?.tempData?.editorSesionCustomFoldData,
         }
       };
+
       await compoNotes.UpdateAsync(data);
     }
     
     compoNotif.Pop('Saved');
-    
   }
   
   async function TaskExportDataToFile() {
@@ -196,6 +199,19 @@ let app = (function() {
   
   }
   
+  function ListenAppUnload() {
+    window.addEventListener('beforeunload', handleBeforeUnloadEvent);
+  }
+  
+  function UnlistenAppUnload() {
+    window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
+  }
+  
+  function handleBeforeUnloadEvent(evt) {
+    evt.preventDefault();
+    evt.returnValue = true;
+  }
+
   function Log(message) {
     $('#container-debug-log').innerHTML += `\n${message}`;
   }

@@ -10,6 +10,42 @@ let ui = (function() {
     OpenWorkspaceByIdAsync,
   };
   
+  let noteInputDebounce = debounce(110, async () => {
+    
+    let currentWorkspaceId = compoWorkspace.GetActiveId();
+    let gridNotesObj = uiNotes.GetAllGridContent();
+    await compoTempWorkspace.StoreTempAsync(currentWorkspaceId, gridNotesObj);
+    
+    let checkResult = compoTempWorkspace.CheckUnsavedChangesById(currentWorkspaceId);
+    if (checkResult.hasUnsavedChanges) {
+      uiFileTab.SetDirtyById(currentWorkspaceId, true);
+    } else {
+      compoTempWorkspace.DeleteTempNotesById(currentWorkspaceId);
+      uiFileTab.SetDirtyById(currentWorkspaceId, false);
+    }
+    
+    // check if there's no unsaved changes
+    if (compoTempWorkspace.HasUnsavedChanges()) {
+      app.ListenAppUnload();
+    } else {
+      app.UnlistenAppUnload();
+    }
+  });
+  
+  function HandleNotesKeydown(evt) {
+    noteInputDebounce();
+  }
+  
+  function debounce(time, callback) {
+    let timeoutId;
+    return function(...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        callback(...args);
+      }, time);
+    };
+  }
+  
   async function OpenPipCanvasModule() {
     const player =  document.createElement('iframe');
     player.style.width = '100%';
@@ -26,14 +62,26 @@ let ui = (function() {
   
   async function OpenWorkspaceByIdAsync(id) {
     
-    let currentWorkspaceId = compoTabManager.GetActiveId();
+    let currentWorkspaceId = compoWorkspace.GetActiveId();
     
     if (id == currentWorkspaceId) return;
+    
+    // capture notes
+    compoTempWorkspace.CaptureNotesAsync(id);
     
     let gridNotesObj = uiNotes.GetAllGridContent();
     let itemTab = compoTabManager.GetById(id);
     
     await compoTempWorkspace.StoreTempAsync(currentWorkspaceId, gridNotesObj);
+    
+    // remove temp notes if content is the same
+    let checkResult = compoTempWorkspace.CheckUnsavedChangesById(currentWorkspaceId);
+    if (checkResult.hasUnsavedChanges) {
+      app.ListenAppUnload();
+    } else {
+      compoTempWorkspace.DeleteTempNotesById(currentWorkspaceId);
+      app.UnlistenAppUnload();
+    }
     
     if (!itemTab) {
       let workspace = compoWorkspace.GetById(id);
@@ -91,7 +139,7 @@ let ui = (function() {
   }
   
   function attachListeners() {
-    hotkeys('esc,ctrl+s,ctrl+d,alt+p,alt+w,alt+.,alt+,,alt+n', function (event, handler){
+    hotkeys('esc,ctrl+s,ctrl+d,alt+p,alt+w,alt+.,alt+,,alt+n', async function(event, handler){
       switch (handler.key) {
         case 'esc':
           if (document.activeElement.classList.contains('text')) {
@@ -101,7 +149,8 @@ let ui = (function() {
           break;
         case 'ctrl+s': 
           event.preventDefault();
-          app.save();
+          await app.SaveAsync();
+          await compoTempWorkspace.RecaptureCurrentWorkspaceAsync();
           break;
         case 'ctrl+d': 
           event.preventDefault();

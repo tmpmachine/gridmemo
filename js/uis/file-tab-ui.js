@@ -24,7 +24,7 @@ let uiFileTab = (function() {
   }
 
   function handleMiddleClick(data) {
-    closeFileTab(data.id);
+    closeFileTabAsync(data.id);
   }
 
   function HandleMouseDownTab(evt) {
@@ -51,7 +51,7 @@ let uiFileTab = (function() {
     let item = compoTabManager.GetActive();
     if (!item) return;
     
-    closeFileTab(item.id);
+    closeFileTabAsync(item.id);
   }
   
   function OpenNextTab() {
@@ -117,7 +117,7 @@ let uiFileTab = (function() {
     
     switch (action) {
       case 'open': ui.OpenWorkspaceByIdAsync(id); break;
-      case 'close': closeFileTab(id); break;
+      case 'close': closeFileTabAsync(id); break;
     }
   }
   
@@ -164,7 +164,15 @@ let uiFileTab = (function() {
     return item;
   }
   
-  function closeFileTab(id) {
+  async function closeFileTabAsync(id) {
+    
+    if (compoTempWorkspace.HasUnsavedChangesById(id)) {
+      let isConfirm = window.confirm('Unsaved changes will be lost. Continue?');
+      if (!isConfirm) return;
+      
+      compoTempWorkspace.DeleteById(id);
+    }
+    
     let newActiveTab = setActiveTabBeforeDeletionOnId(id);
     
     if (!newActiveTab) {
@@ -179,12 +187,12 @@ let uiFileTab = (function() {
     appData.Save();
     
     refreshListTab();
-    
     if (newActiveTab) {
       ui.OpenWorkspaceByIdAsync(newActiveTab.id);
     }
-    
     uiWorkspace.RefreshWorkspaceState();
+    
+    await compoTempWorkspace.RecaptureCurrentWorkspaceAsync();
   }
   
   
