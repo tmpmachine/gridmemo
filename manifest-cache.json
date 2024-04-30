@@ -40,7 +40,8 @@
   ],
   "utils": [
     "js/utils/awaiter-util.js",
-    "js/utils/view-state-util.js",
+    "js/vendors/@tmp7/view-state-util/view-state-util.js",
+    "js/vendors/@tmp7/windog/windog.js",
     "js/utils/uuidv4-util.js"
   ],
   "fonts": [

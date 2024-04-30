@@ -9,7 +9,8 @@ let pipWindow;
       urls: [
         "js/dom-events.js",
         "js/view-states.js",
-        "js/utils/view-state-util.js",
+        "js/vendors/@tmp7/view-state-util/view-state-util.js",
+        "js/vendors/@tmp7/windog/windog.js",
       ],
       callback: function() {
         viewStates.Init();
