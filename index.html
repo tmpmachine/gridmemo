@@ -241,6 +241,9 @@
     </div>
   </div>
   
+  <!-- # hidden element container -->
+  <div class="_limbo obsoletes"></div>
+  
   <div id="notif" class="notif-wrapper">
     <div class="notif" style="font-family:sans-serif;background:cornflowerblue;font-size:14px;color:#fff;">Text copied</div>
   </div>
@@ -348,12 +351,19 @@
     </div>
   </template>
   <template id="tmp-list-note">
-    <div class="notes" data-kind="item">
+    <div class="wg-Notes notes" data-kind="item">
       <!-- ^# tmp-list-note -->
       <div class="notes-inner">
+        <div class="title" data-slot="title" data-kind="title"></div>
         <textarea class="text mousetrap" spellcheck="false"></textarea>
-        <div class="handle pos-absolute" style="bottom:0;right:0;">
-          <div class="icon-mate-o btn-icon">drag_pan</div>
+        
+        <!-- # notes floating actions -->
+        <div class="d-flex gap-half justify-content-end pos-absolute" style="bottom:0;right:0;">
+          <div class="icon-mate-o btn-icon cursor-pointer" data-action="change-color">palette</div>
+          <div class="icon-mate-o btn-icon cursor-pointer" data-action="edit-title">title</div>
+          <div class="handle">
+            <div class="icon-mate-o btn-icon cursor-grab">drag_pan</div>
+          </div>
         </div>
       </div>
     </div>

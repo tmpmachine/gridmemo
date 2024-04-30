@@ -8,6 +8,7 @@ let compoNotes = (function() {
     UpdateAsync,
     DeleteById,
     GetAllByIdsAsync,
+    UpdateColorByIdAsync,
   };
   
   // idb config
@@ -22,6 +23,15 @@ let compoNotes = (function() {
     activeGroupId: defaultGroupId,
     missionGroup: [],
   };
+  
+  async function UpdateColorByIdAsync(id, hex) {
+    let { data } = await GetByIdAsync(id);
+    let noRefData = JSON.parse(JSON.stringify(data));
+    
+    noRefData.color = hex;
+    
+    await compoNotes.UpdateAsync(noRefData);
+  }
   
   async function GetAllByIdsAsync(noteIds) {
     let noteObjs = [];

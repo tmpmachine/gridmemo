@@ -241,6 +241,9 @@
     ]
   ]
   
+  <!-- # hidden element container -->
+  [ ._limbo .obsoletes]
+  
   <div id="notif" class="notif-wrapper">
     <div class="notif" style="font-family:sans-serif;background:cornflowerblue;font-size:14px;color:#fff;">Text copied</div>
   </div>
@@ -348,12 +351,19 @@
     ]
   </template>
   <template id="tmp-list-note">
-    [ .notes data-kind="item"
+    [ .wg-Notes .notes data-kind="item"
       <!-- ^# tmp-list-note -->
-      [ .notes-inner
+      [ .notes-inner 
+        [ .title data-slot="title" data-kind="title"]
         [t .text spellcheck="false" .mousetrap]
-        [ .handle .pos-absolute {b:0;r:0;}
-          [ .icon-mate-o .btn-icon 'drag_pan']
+        
+        <!-- # notes floating actions -->
+        [ .d-flex .gap-half .justify-content-end .pos-absolute {b:0;r:0;}
+          [ .icon-mate-o 'palette' .btn-icon .cursor-pointer data-action="change-color"]
+          [ .icon-mate-o 'title' .btn-icon .cursor-pointer data-action="edit-title"]
+          [ .handle
+            [ .icon-mate-o .btn-icon 'drag_pan' .cursor-grab]
+          ]
         ]
       ]
     ]
