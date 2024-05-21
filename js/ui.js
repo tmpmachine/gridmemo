@@ -152,6 +152,8 @@ let ui = (function() {
           event.preventDefault();
           await app.SaveAsync();
           await compoTempWorkspace.RecaptureCurrentWorkspaceAsync();
+          let currentWorkspaceId = compoWorkspace.GetActiveId();
+          uiFileTab.SetPersistentTabByWorkspaceId(currentWorkspaceId);
           break;
         case 'ctrl+d': 
           event.preventDefault();
